@@ -68,6 +68,7 @@ def is_trip_done():
             return False
     return True
 
+# Farmer agent's action in step 3 and 5 is randomized.
 def farmer_agent():
     take(on_boat["FRGO"], BANK.B)
     take(on_boat["FR"], BANK.A)

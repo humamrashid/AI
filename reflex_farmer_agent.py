@@ -54,10 +54,10 @@ on_boat = {
         }
 
 # Take members of 'GROUP' to one of the river 'BANK's.
-def take(GROUP, BANK):
-    print(f"Taking {[m.value for m in GROUP]} to {BANK.value}")
-    for m in GROUP:
-        curr_loc[m] = BANK
+def take(group, bank):
+    print(f"Taking {[m.value for m in group]} to {bank.value}")
+    for m in group:
+        curr_loc[m] = bank
         print(f"|--{m.value} is now on {curr_loc[m].value}")
 
 # Check if the trip is done; the trip is considered done when all members of GROUP are on river BANK

@@ -3,6 +3,7 @@
 # Implementation of farmer, fox, goose and grain problem solution using simple reflex agent method.
 
 import enum
+import random
 
 # River banks: A is the starting point, B is the destination.
 
@@ -26,8 +27,6 @@ import enum
 # 14 = (GO) on A, (FR, FO, GR) on B     (Valid)
 # 15 = () on A, (FR, FO, GR, GO) on B   (Valid)
 
-trip_done = False
-
 class GROUP(enum.Enum):
     FR = "Farmer"
     FO = "Fox"
@@ -48,7 +47,7 @@ curr_loc = {
 
 # Things that can be on the boat: the farmer and at most one other thing among the group of three.
 on_boat = {
-        "FR":   (GROUP.FR),
+        "FR":   (GROUP.FR,),
         "FRFO": (GROUP.FR, GROUP.FO),
         "FRGO": (GROUP.FR, GROUP.GO),
         "FRGR": (GROUP.FR, GROUP.GR)
@@ -66,15 +65,27 @@ def take(GROUP, BANK):
 def is_trip_done():
     for m in GROUP:
         if curr_loc[m] != BANK.B:
-            trip_done = False
-    trip_done = True
+            return False
+    return True
 
-def reflex_farmer_agent():
+def farmer_agent():
     take(on_boat["FRGO"], BANK.B)
     take(on_boat["FR"], BANK.A)
+    fox_first = random.choice([True, False])
+    if fox_first:
+        take(on_boat["FRFO"], BANK.B)
+    else:
+        take(on_boat["FRGR"], BANK.B)
+    take(on_boat["FRGO"], BANK.A)
+    if fox_first:
+        take(on_boat["FRGR"], BANK.B)
+    else:
+        take(on_boat["FRFO"], BANK.B)
+    take(on_boat["FR"], BANK.A)
+    take(on_boat["FRGO"], BANK.B)
 
-while not trip_done():
-    reflex_farmer_agent()
+while not is_trip_done():
+    farmer_agent()
 print("*** Trip Completed Successfully ***")
 
 # EOF.

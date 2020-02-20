@@ -11,10 +11,8 @@ import random
 x = []
 y = []
 for i in range(0, 50):
-    x.append(random.uniform(-5, 6))
-
-for i in range(0, 50):
     c = random.choice([0,1,2])
+    x.append(random.uniform(-5, 6))
     if c == 1:
         y.append(x[i] + 1)
     elif c == 2:

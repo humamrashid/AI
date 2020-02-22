@@ -16,22 +16,25 @@ import random
 # (Farmer = FR, Fox = FO, Goose = GO, Grain = GR)
 # (River banks: starting at A, ending in B)
 #
-# (FR, FO, GO, GR) on A, () on  B  (Valid)      = 01111 = 10000
+
+# (FR, FO, GO, GR) on A, () on  B  (Valid)      = 01111 = 10000 = Start state
 # (FR, FO, GO) on A, (GR) on B     (Valid)      = 01110 = 10001
 # (FR, FO, GR) on A, (GO) on B     (Valid)      = 01101 = 10010
+# (FR, FO) on A, (GO, GR) on B     (Invalid)    = 01100 = 10011
 # (FR, GO, GR) on A, (FO) on B     (Valid)      = 01011 = 10100
-# (FO, GR, GO) on A, (FR) on B     (Invalid)    = 00111 = 11000
-# (FR, FO) on A, (GO, GR) on B     (Invalid)    = 11000 = 00111
-# (FR, GR) on A, (FO, GO) on B     (Invalid)    = 01001 = 10110
 # (FR, GO) on A, (FO, GR) on B     (Valid)      = 01010 = 10101
-# (FO, GR) on A, (FR, GO) on B     (Valid)      = 00101 = 11010
-# (FO, GO) on A, (FR, GR) on B     (Invalid)    = 00110 = 11001
-# (GR, GO) on A, (FR, FO) on B     (Invalid)    = 00011 = 11100
+# (FR, GR) on A, (FO, GO) on B     (Invalid)    = 01001 = 10110
 # (FR) on A, (FO, GR, GO) on B     (Invalid)    = 01000 = 10111
-# (FO) on A, (FR, GR, GO) on B     (Valid)
-# (GR) on A, (FR, FO, GO) on B     (Valid)
-# (GO) on A, (FR, FO, GR) on B     (Valid)
-# () on A, (FR, FO, GR, GO) on B   (Valid)      = 00000 = 11111
+# (FO, GR, GO) on A, (FR) on B     (Invalid)    = 00111 = 11000
+# (FO, GO) on A, (FR, GR) on B     (Invalid)    = 00110 = 11001
+# (FO, GR) on A, (FR, GO) on B     (Valid)      = 00101 = 11010
+# (FO) on A, (FR, GR, GO) on B     (Valid)      = 00100 = 11011
+# (GR, GO) on A, (FR, FO) on B     (Invalid)    = 00011 = 11100
+# (GO) on A, (FR, FO, GR) on B     (Valid)      = 00010 = 11101
+# (GR) on A, (FR, FO, GO) on B     (Valid)      = 00001 = 11110
+# () on A, (FR, FO, GR, GO) on B   (Valid)      = 00000 = 11111 = Goal state
+#
+# Decimal equivalent (12, 19), (9, 22), (8, 23), (7, 24), (6, 25), (3, 28) are invalid.
 
 class GROUP(enum.Enum):
     FR = "Farmer"

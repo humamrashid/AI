@@ -36,6 +36,32 @@ import random
 #
 # Decimal equivalent (12, 19), (9, 22), (8, 23), (7, 24), (6, 25), (3, 28) are invalid.
 
+# 0000 = VALID      (Start state)
+# 0001 = VALID
+# 0010 = VALID
+# 0011 = INVALID
+# 0100 = VALID
+# 0101 = VALID
+# 0110 = INVALID
+# 0111 = INVALID
+# 1000 = INVALID
+# 1001 = INVALID
+# 1010 = VALID
+# 1011 = VALID
+# 1100 = INVALID
+# 1101 = VALID
+# 1110 = VALID
+# 1111 = VALID      (Goal state)
+
+# 000 = VALID
+# 001 = VALID
+# 010 = VALID
+# 011 = VALID OR INVALID if farmer not there.
+# 100 = VALID OR INVALID if farmer there.
+# 101 = VALID
+# 110 = VALID OR INVALID if farmer not there.
+# 111 = VALID OR INVALID if farmer not there.
+
 class GROUP(enum.Enum):
     FR = "Farmer"
     FO = "Fox"

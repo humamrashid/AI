@@ -47,15 +47,20 @@ transit = False
 def simple_reflex_agent():
     # Rules:
     if states["Fox"] == 1 and states["Goose"] == 1 and states["Farmer"] == 0:
-        transit = False
+        return False
     elif states["Goose"] == 1 and states["Grain"] == 1 and states["Farmer"] == 0:
-        transit = False
-    elif states["Farmer"] == 1 and states["Fox"] == 0 and states["Goose"] == 0
-        transit = False
+        return False
+    elif states["Farmer"] == 1 and states["Fox"] == 0 and states["Goose"] == 0:
+        return False
     elif states["Farmer"] == 1 and states["Goose"] == 0 and states["Grain"] == 0:
-        transit = False
-    return
+        return False
+    return True
 
-#while not transit:
+for s in states:
+    for i in range(0, 2):
+        for j in range(0, 2):
+            states[s] = j
+            if simple_reflex_agent():
+                print(states)
 
 # EOF.

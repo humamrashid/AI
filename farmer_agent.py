@@ -31,36 +31,56 @@ states = {
         "Grain":    0
         }
 
-# 000 = VALID
-# 001 = VALID
-# 010 = VALID
-# 011 = VALID OR INVALID if farmer not there.
-# 100 = VALID OR INVALID if farmer there.
-# 101 = VALID
-# 110 = VALID OR INVALID if farmer not there.
-# 111 = VALID OR INVALID if farmer not there.
-
 # Indicates successful transition from starting point to finishing point; initially false.
 transit = False
 
-# Percepts are the states directly, no need to interpret.
+def reset():
+    for s in states:
+        states[s] = 0
+    print("*** RESET ***")
+
 def simple_reflex_agent():
+    global transit
     # Rules:
     if states["Fox"] == 1 and states["Goose"] == 1 and states["Farmer"] == 0:
-        return False
+        transit = False
+        reset()
     elif states["Goose"] == 1 and states["Grain"] == 1 and states["Farmer"] == 0:
-        return False
+        transit = False
+        reset()
     elif states["Farmer"] == 1 and states["Fox"] == 0 and states["Goose"] == 0:
-        return False
+        transit = False
+        reset()
     elif states["Farmer"] == 1 and states["Goose"] == 0 and states["Grain"] == 0:
-        return False
-    return True
+        transit = False
+        reset()
+    elif states["Farmer"] == 0 or states["Fox"] == 0 or states["Goose"] == 0 or states["Grain"] == 0:
+        transit = False
+    else:
+        transit = True
 
-for s in states:
-    for i in range(0, 2):
-        for j in range(0, 2):
-            states[s] = j
-            if simple_reflex_agent():
-                print(states)
+while not transit:
+    if states["Farmer"] == 0:
+        states["Farmer"] = 1
+        print("Farmer crosses river", end=" ")
+    else:
+        states["Farmer"] = 0
+        print("Farmer goes back", end=" ")
+    if states["Farmer"] == 1:
+        c = random.choice(["Fox", "Goose", "Grain"])
+        if states[c] != 1:
+            states[c] = 1
+            print(f"with {c}")
+        print()
+    elif states["Farmer"] == 0:
+        c = random.choice(["Fox", "Goose", "Grain"])
+        if states[c] != 0:
+            states[c] = 0
+            print(f"with {c}")
+        print()
+    simple_reflex_agent()
+    #print(states)
+
+print("*** Success ***")
 
 # EOF.

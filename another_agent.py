@@ -41,29 +41,23 @@ def reset():
 
 # If an invalid state is reached, the run is reset and the agent has to start from the initial state
 # again (all 0's).
-def simple_reflex_agent():
+def check_constraints():
     global transit
     # Rules:
     if states["Fox"] == 1 and states["Goose"] == 1 and states["Farmer"] == 0:
-        reset()
-        return
+        return False
     elif states["Goose"] == 1 and states["Grain"] == 1 and states["Farmer"] == 0:
-        reset()
-        return
+        return False
     elif states["Farmer"] == 1 and states["Fox"] == 0 and states["Goose"] == 0:
-        reset()
-        return
+        return False
     elif states["Farmer"] == 1 and states["Goose"] == 0 and states["Grain"] == 0:
-        reset()
-        return
-    elif states["Farmer"] == 0 or states["Fox"] == 0 or states["Goose"] == 0 or states["Grain"] == 0:
-        return
-    else:
+        return False
+    elif states["Farmer"] == 1 and states["Fox"] == 1 and states["Goose"] == 1 and states["Grain"] == 1:
         transit = True
+    return True
 
-# Given the simple reflex method based on state changes, valid states may be repeated without
-# invalidating a single run.
 while not transit:
+    sc = False
     if states["Farmer"] == 0:
         states["Farmer"] = 1
         print("Farmer crosses river", end="")
@@ -71,18 +65,29 @@ while not transit:
         states["Farmer"] = 0
         print("Farmer goes back", end="")
     if states["Farmer"] == 1:
-        c = random.choice(["Fox", "Goose", "Grain"])
-        if states[c] != 1:
-            states[c] = 1
-            print(f" with {c}", end="")
-        print()
+        while not sc:
+            c = random.choice(["Fox", "Goose", "Grain"])
+            if states[c] != 1:
+                temp = states[c]
+                states[c] = 1
+                if not check_constraints():
+                    states[c] = temp
+                else:
+                    print(f" with {c}", end="")
+                    sc = True
+                print()
     elif states["Farmer"] == 0:
-        c = random.choice(["Fox", "Goose", "Grain"])
-        if states[c] != 0:
-            states[c] = 0
-            print(f" with {c}", end="")
-        print()
-    simple_reflex_agent()
+        while not sc:
+            c = random.choice(["Fox", "Goose", "Grain"])
+            if states[c] != 0:
+                temp = states[c]
+                states[c] = 0
+                if not check_constraints():
+                    states[c] = temp
+                else:
+                    print(f" with {c}", end="")
+                    sc = True
+                print()
     #print(states)
 
 print("*** Success ***")

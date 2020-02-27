@@ -24,6 +24,13 @@ import random
 # 1101 = VALID
 # 1110 = VALID
 # 1111 = VALID      (Goal state)
+#
+# Ideal solutions:
+# 1010 0010 1011 0001 1101 0101 1111
+# 
+# or
+#
+# 1010 0010 1110 0100 1101 0101 1111
 states = {
         "Farmer":   0,
         "Fox":      0,

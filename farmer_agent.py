@@ -41,7 +41,7 @@ def reset():
 
 # If an invalid state is reached, the run is reset and the agent has to start from the initial state
 # again (all 0's).
-def simple_reflex_agent():
+def check_constraints():
     global transit
     # Rules:
     if states["Fox"] == 1 and states["Goose"] == 1 and states["Farmer"] == 0:
@@ -58,8 +58,13 @@ def simple_reflex_agent():
         return
     elif states["Farmer"] == 0 or states["Fox"] == 0 or states["Goose"] == 0 or states["Grain"] == 0:
         return
-    else:
-        transit = True
+    transit = True
+
+def change_state(n):
+    c = random.choice(["Fox", "Goose", "Grain"])
+    if states[c] != n:
+        states[c] = n
+        print(f" with {c}", end="")
 
 # Given the simple reflex method based on state changes, valid states may be repeated without
 # invalidating a single run.
@@ -71,19 +76,12 @@ while not transit:
         states["Farmer"] = 0
         print("Farmer goes back", end="")
     if states["Farmer"] == 1:
-        c = random.choice(["Fox", "Goose", "Grain"])
-        if states[c] != 1:
-            states[c] = 1
-            print(f" with {c}", end="")
+        change_state(1)
         print()
     elif states["Farmer"] == 0:
-        c = random.choice(["Fox", "Goose", "Grain"])
-        if states[c] != 0:
-            states[c] = 0
-            print(f" with {c}", end="")
+        change_state(0)
         print()
-    simple_reflex_agent()
-    #print(states)
+    check_constraints()
 
 print("*** Success ***")
 

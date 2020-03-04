@@ -12,12 +12,18 @@ def print_puzzle():
     for r in puzzle:
         print('*******************')
         for c in r:
-            print('| ', end=" ")
-            print(f'{c}  ', end="")
-            #print(' |', end="")
+            print('| ', end=' ')
+            if c != 0:
+                print(f'{c}  ', end='')
+            else:
+                print(f'   ', end='')
         print('| ')
     print('*******************')
 
+print('Initial state:\n')
+
 print_puzzle()
+
+print('\nSolved')
 
 # EOF.

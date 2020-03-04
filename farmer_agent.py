@@ -56,7 +56,6 @@ def reset():
     counter -= 1
 
 # If an invalid state is reached, the run is reset and the agent has to start from one step back.
-# again (all 0's).
 def check_constraints():
     global transit
     # Rules:

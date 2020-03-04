@@ -4,7 +4,7 @@
 
 import numpy as np
 
-# 8-puzzle is represented as a 1d array, initialized with default values representing the initial
+# 8-puzzle is represented as a 2D array, initialized with default values representing the initial
 # state (numbered tiles). A value of 0 indicates the blank tile.
 puzzle = np.array([(1,4,3), (7,8,0), (6,2,5)])
 

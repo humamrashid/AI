@@ -72,7 +72,8 @@ def check_constraints():
     elif states["Farmer"] == 1 and states["Goose"] == 0 and states["Grain"] == 0:
         reset()
         return
-    elif states["Farmer"] == 0 or states["Fox"] == 0 or states["Goose"] == 0 or states["Grain"] == 0:
+    elif states["Farmer"] == 0 or states["Fox"] == 0 or states["Goose"] == 0 \
+            or states["Grain"] == 0:
         return
     transit = True
 

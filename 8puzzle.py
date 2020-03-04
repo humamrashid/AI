@@ -8,9 +8,19 @@ import numpy as np
 # state (numbered tiles). A value of 0 indicates the blank tile.
 puzzle = np.array([(1,4,3), (7,8,0), (6,2,5)])
 
-# Indicates current position of blank tile, initially (1, 2).
-blank_pos = (1, 2)
+tiles = {
+        0: (1, 2),
+        1: (0, 0),
+        2: (2, 1),
+        3: (0, 2),
+        4: (0, 1),
+        5: (2, 2),
+        6: (2, 0),
+        7: (1, 0),
+        8: (1, 1)
+        }
 
+# Print a tile pattern with current values.
 def print_puzzle():
     for r in puzzle:
         print('*******************')
@@ -25,25 +35,45 @@ def print_puzzle():
 
 # Same col., one row above.
 def blank_above(pos):
-    return True if pos[1] == blank_pos[1] and (pos[0] - blank_pos[0] == 1) else False
+    return True if pos[1] == tiles[0][1] and (pos[0] - tiles[0][0] == 1) else False
 
 # Sample col., one row below.
 def blank_below(pos):
-    return True if pos[1] == blank_pos[1] and (blank_pos[0] - pos[0] == 1) else False
+    return True if pos[1] == tiles[0][1] and (tiles[0][0] - pos[0] == 1) else False
 
 # Same row, one col. right.
 def blank_right(pos):
-    return True if pos[0] == blank_pos[0] and (blank_pos[1] - pos[1] == 1) else False
+    return True if pos[0] == tiles[0][0] and (tiles[0][1] - pos[1] == 1) else False
 
 # Same row, one col. left
 def blank_left(pos):
-    return True if pos[0] == blank_pos[0] and (pos[1] - blank_pos[1] == 1) else False
+    return True if pos[0] == tiles[0][0] and (pos[1] - tiles[0][1] == 1) else False
+
+# Switch values and positions of tiles t1 and t2.
+def switch_tile(t1, t2):
+    tmp_pos = tiles[t1]
+    tmp_val = puzzle[tmp_pos[0], tmp_pos[1]]
+    puzzle[tmp_pos[0], tmp_pos[1]] = puzzle[tiles[t2][0], tiles[t2][1]]
+    puzzle[tiles[t2][0], tiles[t2][1]] = tmp_val
+    tiles[t1] = tiles[t2]
+    tiles[t2] = tmp_pos
+
+def move_up(t):
+    if blank_above(tiles[t]):
+        return True
+    return False
+#def move_down(pos):
+#def move_left(pos):
+#def move_right(pos):
 
 print('Initial state:\n')
 
 print_puzzle()
-
-print(blank_right((1,1)))
+print(tiles)
+switch_tile(0, 5)
+print("after")
+print_puzzle()
+print(tiles)
 
 print('\nSolved')
 

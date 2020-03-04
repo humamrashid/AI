@@ -41,10 +41,19 @@ states = {
 # Indicates successful transition from starting point to finishing point; initially false.
 transit = False
 
+# Stack to keep track of states.
+stack = []
+
+# Counter for number of steps taken.
+counter = 0
+
 def reset():
-    for s in states:
-        states[s] = 0
-    print("*** RESET ***")
+    global states
+    global counter
+    print("Reached invalid state!")
+    states = stack.pop()
+    print("Going back one step")
+    counter -= 1
 
 # If an invalid state is reached, the run is reset and the agent has to start from the initial state
 # again (all 0's).
@@ -68,28 +77,31 @@ def check_constraints():
     transit = True
 
 def change_state(n):
+    global states
     c = random.choice(["Fox", "Goose", "Grain"])
     if states[c] != n:
         states[c] = n
         print(f" with {c}", end="")
 
-# Given the simple reflex method based on state changes, valid states may be repeated without
-# invalidating a single run.
+print(f"Start state: {states}")
 while not transit:
-    if states["Farmer"] == 0:
+    # Add current state (before change) to the stack.
+    stack.append(states.copy())
+    counter += 1
+    if states[f"Farmer"] == 0:
         states["Farmer"] = 1
-        print("Farmer crosses river", end="")
+        print(f"({counter}) Farmer crosses river", end="")
     else:
         states["Farmer"] = 0
-        print("Farmer goes back", end="")
+        print(f"({(counter)}) Farmer goes back", end="")
     if states["Farmer"] == 1:
         change_state(1)
         print()
     elif states["Farmer"] == 0:
         change_state(0)
         print()
+    print(states)
     check_constraints()
-
 print("*** Success ***")
 
 # EOF.

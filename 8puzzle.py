@@ -50,7 +50,7 @@ def blank_left(pos):
     return True if pos[0] == tiles[0][0] and (pos[1] - tiles[0][1] == 1) else False
 
 # Switch values and positions of tiles t1 and t2.
-def switch_tile(t1, t2):
+def switch_tiles(t1, t2):
     tmp_pos = tiles[t1]
     tmp_val = puzzle[tmp_pos[0], tmp_pos[1]]
     puzzle[tmp_pos[0], tmp_pos[1]] = puzzle[tiles[t2][0], tiles[t2][1]]
@@ -60,17 +60,34 @@ def switch_tile(t1, t2):
 
 def move_up(t):
     if blank_above(tiles[t]):
+        switch_tiles(0, t)
         return True
     return False
-#def move_down(pos):
-#def move_left(pos):
-#def move_right(pos):
+
+def move_down(t):
+    if blank_below(tiles[t]):
+        switch_tiles(0, t)
+        return True
+    return False
+
+def move_right(t):
+    if blank_right(tiles[t]):
+        switch_tiles(0, t)
+        return True
+    return False
+
+def move_left(t):
+    if blank_left(tiles[t]):
+        switch_tiles(0, t)
+        return True
+    return False
 
 print('Initial state:\n')
 
 print_puzzle()
 print(tiles)
-switch_tile(0, 5)
+move_up(5)
+move_right(2)
 print("after")
 print_puzzle()
 print(tiles)

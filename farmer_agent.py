@@ -55,7 +55,7 @@ def reset():
     print("Going back one step")
     counter -= 1
 
-# If an invalid state is reached, the run is reset and the agent has to start from the initial state
+# If an invalid state is reached, the run is reset and the agent has to start from one step back.
 # again (all 0's).
 def check_constraints():
     global transit

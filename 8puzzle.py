@@ -14,6 +14,8 @@ goal_state = np.array([(1,2,3), (8,0,4), (7,6,5)])
 
 done = False
 
+solution_stack = []
+
 # Tracking positions of the tiles. 0-value tile is the blank space.
 tiles = {
         0: (1, 2),
@@ -41,8 +43,8 @@ class Node:
         self.action = action
 
 # Print a tile pattern with current values.
-def print_puzzle():
-    for r in puzzle:
+def print_puzzle(state):
+    for r in state:
         print('*******************')
         for c in r:
             print('| ', end=' ')
@@ -129,8 +131,15 @@ def in_frontier(s):
 
 def solution(node):
     global done
+    solution_stack.append(node.state)
+    p = node.parent
+    while p != None:
+        solution_stack.append(p.state)
+        p = p.parent
+    while len(solution_stack) != 0:
+        print_puzzle(solution_stack.pop())
+        print()
     done = True
-    return
 
 def goal_test(state):
     return True if np.array_equal(state, goal_state) else False
@@ -155,7 +164,10 @@ def breadth_first():
                frontier.append(child)
 
 print('Initial state:\n')
-print_puzzle()
+print_puzzle(init_state)
+n1 = Node(init_state, None, None)
+n2 = Node(goal_state, n1, None)
+solution(n2)
 #breadth_first()
 
 # EOF.

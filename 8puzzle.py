@@ -3,13 +3,16 @@
 # Solution for 8-puzzle.
 
 import numpy as np
+from collections import deque
 
 # 8-puzzle is represented as a 2D array, initialized with default values representing the initial
 # state (numbered tiles). A value of 0 indicates the blank tile. This is the 'world configuration'.
 puzzle = np.array([(1,4,3), (7,8,0), (6,2,5)])
 
 init_state = np.array([(1,4,3), (7,8,0), (6,2,5)])
-goal_state = np.array([(), (), ()])
+goal_state = np.array([(1,2,3), (8,0,4), (7,6,5)])
+
+done = False
 
 # Tracking positions of the tiles. 0-value tile is the blank space.
 tiles = {
@@ -23,6 +26,9 @@ tiles = {
         7: (1, 0),
         8: (1, 1)
         }
+
+# Queue for 'frontier' or 'open list'.
+frontier = deque()
 
 # Search tree node structure.
 class Node:
@@ -93,8 +99,36 @@ def move_left(t):
         return True
     return False
 
-print('Initial state:\n')
+def result(state, action):
+    return
 
+def child_node(parent, action):
+    s = result(parent.state, action)
+    p = parent
+    a = action
+    return Node(s, p, a)
+
+def solution(node):
+    return
+
+def goal_test(state):
+    return True if np.array_equal(state, goal_state) else False
+
+def breadth_first():
+    root = Node(init_state, None, None)
+    if goal_test(root.state):
+        return
+    frontier.append(root)
+    while not done:
+        if len(frontier) == 0:
+            print("Failed to find solution")
+            done = True
+
+
+
+print('Initial state:\n')
+print_puzzle()
+breadth_first()
 print('\nSolved')
 
 # EOF.

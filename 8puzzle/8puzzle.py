@@ -80,24 +80,22 @@ def switch_tiles(t1, t2):
     tiles[t1] = tiles[t2]
     tiles[t2] = tmp_pos
 
+# Move tile 't' up, down, right or left.
 def move_up(t):
     if blank_above(tiles[t]):
         switch_tiles(0, t)
         return True
     return False
-
 def move_down(t):
     if blank_below(tiles[t]):
         switch_tiles(0, t)
         return True
     return False
-
 def move_right(t):
     if blank_right(tiles[t]):
         switch_tiles(0, t)
         return True
     return False
-
 def move_left(t):
     if blank_left(tiles[t]):
         switch_tiles(0, t)

@@ -105,6 +105,7 @@ def move_left(t):
     return False
 
 def result(state, action):
+    puzzle = state
     return
 
 def child_node(parent, action):
@@ -164,10 +165,9 @@ def breadth_first():
                frontier.append(child)
 
 print('Initial state:\n')
-print_puzzle(init_state)
-n1 = Node(init_state, None, None)
-n2 = Node(goal_state, n1, None)
-solution(n2)
+print_puzzle(puzzle)
+result(goal_state, None)
+print_puzzle(puzzle)
 #breadth_first()
 
 # EOF.

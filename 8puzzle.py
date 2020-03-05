@@ -5,9 +5,13 @@
 import numpy as np
 
 # 8-puzzle is represented as a 2D array, initialized with default values representing the initial
-# state (numbered tiles). A value of 0 indicates the blank tile.
+# state (numbered tiles). A value of 0 indicates the blank tile. This is the 'world configuration'.
 puzzle = np.array([(1,4,3), (7,8,0), (6,2,5)])
 
+init_state = np.array([(1,4,3), (7,8,0), (6,2,5)])
+goal_state = np.array([(), (), ()])
+
+# Tracking positions of the tiles. 0-value tile is the blank space.
 tiles = {
         0: (1, 2),
         1: (0, 0),
@@ -19,6 +23,13 @@ tiles = {
         7: (1, 0),
         8: (1, 1)
         }
+
+# Search tree node structure.
+class Node:
+    def __init__(self, state, parent, action):
+        self.state = state
+        self.parent = parent
+        self.action = action
 
 # Print a tile pattern with current values.
 def print_puzzle():
@@ -83,14 +94,6 @@ def move_left(t):
     return False
 
 print('Initial state:\n')
-
-print_puzzle()
-print(tiles)
-move_up(5)
-move_right(2)
-print("after")
-print_puzzle()
-print(tiles)
 
 print('\nSolved')
 

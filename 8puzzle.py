@@ -108,6 +108,9 @@ def result(state, action):
 def child_node(parent, action):
     return Node(result(parent.state, action), parent, action)
 
+def actions(state):
+    return
+
 def empty(struct):
     return True if len(struct) == 0 else False
 
@@ -118,7 +121,15 @@ def in_explored(state):
     s = tuple(map(tuple, state))
     return True if s in explored else False
 
+def in_frontier(s):
+    for node in frontier:
+        if np.array_equal(node.state, s):
+            return True
+    return False
+
 def solution(node):
+    global done
+    done = True
     return
 
 def goal_test(state):
@@ -131,17 +142,20 @@ def breadth_first():
         solution(node)
     frontier.append(node)
     while not done:
-        if empty(frontier):
-            print("Failed to find solution")
-            done = True
-        node = frontier.popleft()
-        add_explored(node.state)
-
-
+       if empty(frontier):
+           print("Failed to find solution!")
+           done = True
+       node = frontier.popleft()
+       add_explored(node.state)
+       for a in actions(node.state):
+           child = child_node(node, a)
+           if not in_explored(child.state) and not in_frontier(child.state):
+               if goal_test(child.state):
+                   solution(child)
+               frontier.append(child)
 
 print('Initial state:\n')
 print_puzzle()
-breadth_first()
-print('\nSolved')
+#breadth_first()
 
 # EOF.

@@ -2,15 +2,16 @@
 
 # Solution for 8-puzzle.
 
-import numpy as np
 from collections import deque
 
-# 8-puzzle is represented as a 2D array, initialized with default values representing the initial
+# 8-puzzle is represented as a 2D tuple, initialized with default values representing the initial
 # state (numbered tiles). A value of 0 indicates the blank tile. This is the 'world configuration'.
-puzzle = np.array([(1,4,3), (7,8,0), (6,2,5)])
+puzzle = ((1,4,3), (7,8,0), (6,2,5))
 
-init_state = np.array([(1,4,3), (7,8,0), (6,2,5)])
-goal_state = np.array([(1,2,3), (8,0,4), (7,6,5)])
+# Intial state (pre-determined).
+init_state = ((1,4,3), (7,8,0), (6,2,5))
+# Goal state (pre-determined).
+goal_state = ((1,2,3), (8,0,4), (7,6,5))
 
 done = False
 
@@ -29,6 +30,10 @@ tiles = {
 
 # Queue for 'frontier' or 'open list'.
 frontier = deque()
+
+# Hashtable for 'explored' set or 'closed list'.
+explored = set()
+explored.add(puzz)
 
 # Search tree node structure.
 class Node:
@@ -103,32 +108,34 @@ def result(state, action):
     return
 
 def child_node(parent, action):
-    s = result(parent.state, action)
-    p = parent
-    a = action
-    return Node(s, p, a)
+    return Node(result(parent.state, action), parent, action)
+
+def empty(struct):
+    return True if len(struct) == 0 else False
 
 def solution(node):
     return
 
 def goal_test(state):
-    return True if np.array_equal(state, goal_state) else False
+    return True if state == goal_state else False
 
 def breadth_first():
     root = Node(init_state, None, None)
     if goal_test(root.state):
-        return
+        solution(root)
     frontier.append(root)
     while not done:
-        if len(frontier) == 0:
+        if empty(frontier):
             print("Failed to find solution")
             done = True
+        node = frontier.popleft()
+        explored.add(node.state)
 
 
 
 print('Initial state:\n')
 print_puzzle()
-breadth_first()
+print(explored)
 print('\nSolved')
 
 # EOF.

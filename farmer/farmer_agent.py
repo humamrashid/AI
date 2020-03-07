@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
-# Implementation of farmer, fox, goose and grain problem solution using simple reflex agent method.
+# Implementation of farmer, fox, goose and grain problem solution using tree-based agent with
+# backtracking.
 
 import random
 
@@ -100,7 +101,6 @@ while not transit:
     elif states["Farmer"] == 0:
         change_state(0)
         print()
-    print(states)
     check_constraints()
 print("*** Success ***")
 

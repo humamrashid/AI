@@ -14,9 +14,8 @@ goal_state = np.array([(1,2,3), (8,0,4), (7,6,5)])
 
 done = False
 
-solution_stack = []
-
-# Tracking positions of the tiles. 0-value tile is the blank space.
+# Tracking positions of the tiles in the 'world configuration'. 0-value tile is the blank space.
+# Initial values match the initial state.
 tiles = {
         0: (1, 2),
         1: (0, 0),
@@ -28,6 +27,31 @@ tiles = {
         7: (1, 0),
         8: (1, 1)
         }
+
+def goal_pos(n):
+    for r in range(len(goal_state)):
+        for c in goal_state[r]:
+            if c == n:
+                return (r, c)
+
+movement_metric = {
+        1: [],
+        2: [],
+        3: [],
+        4: [],
+        5: [],
+        6: [],
+        7: [],
+        8: []
+        }
+
+def pick_tile():
+    for s in movement_metric:
+        gp = goal_pos(s)
+        print(gp)
+        movement_metric[s].append(gp[0] - tiles[s][0])
+        movement_metric[s].append(gp[1] - tiles[s][1])
+        print(movement_metric[s])
 
 # Queue for 'frontier' or 'open list'.
 frontier = deque()
@@ -42,8 +66,8 @@ class Node:
         self.parent = parent
         self.action = action
 
-# Print a tile pattern with current values.
-def print_puzzle(state):
+# Print a tile pattern from given 'state'.
+def print_pattern(state):
     for r in state:
         print('*******************')
         for c in r:
@@ -57,22 +81,27 @@ def print_puzzle(state):
 
 # Same col., one row above.
 def blank_above(pos):
+    global tiles
     return True if pos[1] == tiles[0][1] and (pos[0] - tiles[0][0] == 1) else False
 
 # Sample col., one row below.
 def blank_below(pos):
+    global tiles
     return True if pos[1] == tiles[0][1] and (tiles[0][0] - pos[0] == 1) else False
 
 # Same row, one col. right.
 def blank_right(pos):
+    global tiles
     return True if pos[0] == tiles[0][0] and (tiles[0][1] - pos[1] == 1) else False
 
 # Same row, one col. left
 def blank_left(pos):
+    global tiles
     return True if pos[0] == tiles[0][0] and (pos[1] - tiles[0][1] == 1) else False
 
 # Switch values and positions of tiles t1 and t2.
 def switch_tiles(t1, t2):
+    global puzzle, tiles
     tmp_pos = tiles[t1]
     tmp_val = puzzle[tmp_pos[0], tmp_pos[1]]
     puzzle[tmp_pos[0], tmp_pos[1]] = puzzle[tiles[t2][0], tiles[t2][1]]
@@ -82,29 +111,40 @@ def switch_tiles(t1, t2):
 
 # Move tile 't' up, down, right or left.
 def move_up(t):
+    global tiles
     if blank_above(tiles[t]):
         switch_tiles(0, t)
         return True
     return False
 def move_down(t):
+    global tiles
     if blank_below(tiles[t]):
         switch_tiles(0, t)
         return True
     return False
 def move_right(t):
+    global tiles
     if blank_right(tiles[t]):
         switch_tiles(0, t)
         return True
     return False
 def move_left(t):
+    global tiles
     if blank_left(tiles[t]):
         switch_tiles(0, t)
         return True
     return False
 
+action_set = {
+        'up':    move_up,
+        'down':  move_down,
+        'right': move_right,
+        'left':  move_left
+        }
+
 def result(state, action):
-    puzzle = state
-    return
+    global puzzle
+    puzzle = state.copy()
 
 def child_node(parent, action):
     return Node(result(parent.state, action), parent, action)
@@ -130,21 +170,23 @@ def in_frontier(s):
 
 def solution(node):
     global done
+    solution_stack = []
     solution_stack.append(node.state)
     p = node.parent
     while p != None:
         solution_stack.append(p.state)
         p = p.parent
     while len(solution_stack) != 0:
-        print_puzzle(solution_stack.pop())
+        print_pattern(solution_stack.pop())
         print()
     done = True
 
 def goal_test(state):
+    global goal_state
     return True if np.array_equal(state, goal_state) else False
 
 def breadth_first():
-    global done
+    global init_state, done
     node = Node(init_state, None, None)
     if goal_test(node.state):
         solution(node)
@@ -157,15 +199,13 @@ def breadth_first():
        add_explored(node.state)
        for a in actions(node.state):
            child = child_node(node, a)
-           if not in_explored(child.state) and not in_frontier(child.state):
-               if goal_test(child.state):
-                   solution(child)
-               frontier.append(child)
+           #if not in_explored(child.state) and not in_frontier(child.state):
+           #   if goal_test(child.state):
+           #       solution(child)
+           #   frontier.append(child)
 
 print('Initial state:\n')
-print_puzzle(puzzle)
-result(goal_state, None)
-print_puzzle(puzzle)
+pick_tile()
 #breadth_first()
 
 # EOF.

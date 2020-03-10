@@ -84,7 +84,6 @@ def change_state(n):
         states[c] = n
         print(f" with {c}", end="")
 
-print(f"Start state: {states}")
 while not transit:
     # Add current state (before change) to the stack.
     stack.append(states.copy())

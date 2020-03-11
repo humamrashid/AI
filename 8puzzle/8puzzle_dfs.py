@@ -105,13 +105,13 @@ def switch_tiles(t1, t2):
 def move_up():
     global tiles
     t = tile_above(0)
-    if t != -1
+    if t != -1:
         switch_tiles(0, t)
         return True
     return False
 
 # Move blank tile down.
-def move_down(t):
+def move_down():
     global tiles
     t = tile_below(0)
     if t != -1:
@@ -120,7 +120,7 @@ def move_down(t):
     return False
 
 # Move blank tile right.
-def move_right(t):
+def move_right():
     global tiles
     t = tile_right(0)
     if t != -1:
@@ -129,7 +129,7 @@ def move_right(t):
     return False
 
 # Move blank tile left.
-def move_left(t):
+def move_left():
     global tiles
     t = tile_left(0)
     if t != -1:
@@ -210,7 +210,6 @@ def depth_first():
     return
 
 print('Initial state:\n')
-print_pattern(init_state)
-print(tile_left(0))
+print_pattern(puzzle)
 
 # EOF.

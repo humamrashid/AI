@@ -206,9 +206,6 @@ def breadth_first():
            #       solution(child)
            #   frontier.append(child)
 
-def depth_first():
-    return
-
 print('Initial state:\n')
 print_pattern(puzzle)
 

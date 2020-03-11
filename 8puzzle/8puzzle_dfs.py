@@ -36,10 +36,11 @@ explored = set()
 
 # Search tree node structure.
 class Node:
-    def __init__(self, state, parent, action):
+    def __init__(self, state, parent, action, cost):
         self.state = state
         self.parent = parent
         self.action = action
+        self.path_cost = cost
 
 # Print a tile pattern from given 'state'.
 def print_pattern(state):
@@ -54,25 +55,41 @@ def print_pattern(state):
         print('| ')
     print('*******************')
 
-# Same col., one row above.
-def blank_above(pos):
+# Is there another tile on the same col., one row above?
+def tile_above(t):
     global tiles
-    return True if pos[1] == tiles[0][1] and (pos[0] - tiles[0][0] == 1) else False
+    row, col = tiles[t][0], tiles[t][1]
+    for k, v in tiles.items():
+        if (v[1] == col) and (row - v[0] == 1):
+            return k
+    return -1
 
-# Sample col., one row below.
-def blank_below(pos):
+# Is there another tile on the same col., one row below?
+def tile_below(t):
     global tiles
-    return True if pos[1] == tiles[0][1] and (tiles[0][0] - pos[0] == 1) else False
+    row, col = tiles[t][0], tiles[t][1]
+    for k, v in tiles.items():
+        if (v[1] == col) and (v[0] - row == 1):
+            return k
+    return -1
 
-# Same row, one col. right.
-def blank_right(pos):
+# Is there another tile on the same row, one col. right?
+def tile_right(t):
     global tiles
-    return True if pos[0] == tiles[0][0] and (tiles[0][1] - pos[1] == 1) else False
+    row, col = tiles[t][0], tiles[t][1]
+    for k, v in tiles.items():
+        if (v[0] == row) and (v[1] - col == 1):
+            return k
+    return -1
 
-# Same row, one col. left
-def blank_left(pos):
+# Is there another tile on the same row, one col. left?
+def tile_left(t):
     global tiles
-    return True if pos[0] == tiles[0][0] and (pos[1] - tiles[0][1] == 1) else False
+    row, col = tiles[t][0], tiles[t][1]
+    for k, v in tiles.items():
+        if (v[0] == row) and (col - v[1] == 1):
+            return k
+    return -1
 
 # Switch values and positions of tiles t1 and t2.
 def switch_tiles(t1, t2):
@@ -84,28 +101,38 @@ def switch_tiles(t1, t2):
     tiles[t1] = tiles[t2]
     tiles[t2] = tmp_pos
 
-# Move tile 't' up, down, right or left.
-def move_up(t):
+# Move blank tile up.
+def move_up():
     global tiles
-    if blank_above(tiles[t]):
+    t = tile_above(0)
+    if t != -1
         switch_tiles(0, t)
         return True
     return False
+
+# Move blank tile down.
 def move_down(t):
     global tiles
-    if blank_below(tiles[t]):
+    t = tile_below(0)
+    if t != -1:
         switch_tiles(0, t)
         return True
     return False
+
+# Move blank tile right.
 def move_right(t):
     global tiles
-    if blank_right(tiles[t]):
+    t = tile_right(0)
+    if t != -1:
         switch_tiles(0, t)
         return True
     return False
+
+# Move blank tile left.
 def move_left(t):
     global tiles
-    if blank_left(tiles[t]):
+    t = tile_left(0)
+    if t != -1:
         switch_tiles(0, t)
         return True
     return False
@@ -122,7 +149,7 @@ def result(state, action):
     puzzle = state.copy()
 
 def child_node(parent, action):
-    return Node(result(parent.state, action), parent, action)
+    return Node(result(parent.state, action), parent, action, parent.path_cost, + 1)
 
 def actions(state):
     return
@@ -162,7 +189,7 @@ def goal_test(state):
 
 def breadth_first():
     global init_state, done
-    node = Node(init_state, None, None)
+    node = Node(init_state, None, None, 0)
     if goal_test(node.state):
         solution(node)
     frontier.append(node)
@@ -183,6 +210,7 @@ def depth_first():
     return
 
 print('Initial state:\n')
-#breadth_first()
+print_pattern(init_state)
+print(tile_left(0))
 
 # EOF.

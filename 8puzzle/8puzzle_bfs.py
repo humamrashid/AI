@@ -36,10 +36,11 @@ explored = set()
 
 # Search tree node structure.
 class Node:
-    def __init__(self, state, parent, action):
+    def __init__(self, state, parent, action, cost):
         self.state = state
         self.parent = parent
         self.action = action
+        self.path_cost = cost
 
 # Print a tile pattern from given 'state'.
 def print_pattern(state):
@@ -122,7 +123,7 @@ def result(state, action):
     puzzle = state.copy()
 
 def child_node(parent, action):
-    return Node(result(parent.state, action), parent, action)
+    return Node(result(parent.state, action), parent, action, parent.path_cost, + 1)
 
 def actions(state):
     return
@@ -162,7 +163,7 @@ def goal_test(state):
 
 def breadth_first():
     global init_state, done
-    node = Node(init_state, None, None)
+    node = Node(init_state, None, None, 0)
     if goal_test(node.state):
         solution(node)
     frontier.append(node)

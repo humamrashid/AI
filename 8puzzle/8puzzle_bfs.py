@@ -28,35 +28,10 @@ tiles = {
         8: (1, 1)
         }
 
-def goal_pos(n):
-    for r in range(len(goal_state)):
-        for c in goal_state[r]:
-            if c == n:
-                return (r, c)
-
-movement_metric = {
-        1: [],
-        2: [],
-        3: [],
-        4: [],
-        5: [],
-        6: [],
-        7: [],
-        8: []
-        }
-
-def pick_tile():
-    for s in movement_metric:
-        gp = goal_pos(s)
-        print(gp)
-        movement_metric[s].append(gp[0] - tiles[s][0])
-        movement_metric[s].append(gp[1] - tiles[s][1])
-        print(movement_metric[s])
-
 # Queue for 'frontier' or 'open list'.
 frontier = deque()
 
-# Hashed structure for 'explored' set or 'closed list'.
+# Set for 'explored' set or 'closed list'.
 explored = set()
 
 # Search tree node structure.
@@ -204,8 +179,10 @@ def breadth_first():
            #       solution(child)
            #   frontier.append(child)
 
+def depth_first():
+    return
+
 print('Initial state:\n')
-pick_tile()
 #breadth_first()
 
 # EOF.

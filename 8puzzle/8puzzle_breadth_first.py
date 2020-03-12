@@ -29,8 +29,6 @@ tiles = {
         8: (1, 1)
         }
 
-done = False
-
 # Queue for 'frontier' or 'open list'.
 frontier = deque()
 
@@ -104,41 +102,32 @@ def switch_tiles(t1, t2):
     tiles[t1] = tiles[t2]
     tiles[t2] = tmp_pos
 
-# Move blank tile up.
-def move_up():
-    global tiles
+# Returns a possible action set (tiles blank tile can be switched with) based on current position of
+# the blank tile.
+def action_set():
+    acts = dict({'up': None, 'down': None, 'left': None, 'right': None})
     t = tile_above(0)
     if t != -1:
-        switch_tiles(0, t)
-        return True
-    return False
-
-# Move blank tile down.
-def move_down():
-    global tiles
+        acts['up'] = t
+    else:
+        del acts['up']
     t = tile_below(0)
     if t != -1:
-        switch_tiles(0, t)
-        return True
-    return False
-
-# Move blank tile right.
-def move_right():
-    global tiles
-    t = tile_right(0)
-    if t != -1:
-        switch_tiles(0, t)
-        return True
-    return False
-
-# Move blank tile left.
-def move_left():
-    global tiles
+        acts['down'] = t
+    else:
+        del acts['down']
     t = tile_left(0)
     if t != -1:
-        switch_tiles(0, t)
-        return True
-    return False
+        acts['left'] = t
+    else:
+        del acts['left']
+    t = tile_right(0)
+    if t != -1:
+        acts['right'] = t
+    else:
+        del acts['right']
+    print(acts)
+    return acts
 
 def result(state, action):
     global puzzle
@@ -146,19 +135,6 @@ def result(state, action):
 
 def child_node(parent, action):
     return Node(result(parent.state, action), parent, action, parent.path_cost, + 1)
-
-action_set = {
-        'up':    move_up,
-        'down':  move_down,
-        'right': move_right,
-        'left':  move_left
-        }
-
-def actions(state):
-    global tiles
-    blank_pos = tiles[0]
-    print(blank_pos)
-    return
 
 def empty(struct):
     return True if len(struct) == 0 else False
@@ -187,17 +163,18 @@ def solution(node):
     while len(solution_stack) != 0:
         print_pattern(solution_stack.pop())
         print()
-    done = True
 
 def goal_test(state):
     global goal_state
     return True if np.array_equal(state, goal_state) else False
 
 def breadth_first():
+    done = False
     global init_state, done
     node = Node(init_state, None, None, 0)
     if goal_test(node.state):
         solution(node)
+        done = True
     frontier.append(node)
     while not done:
        if empty(frontier):
@@ -205,7 +182,8 @@ def breadth_first():
            done = True
        node = frontier.popleft()
        add_explored(node.state)
-       for a in actions(node.state):
+       acts = action_set()
+       for a in acts:
            child = child_node(node, a)
            #if not in_explored(child.state) and not in_frontier(child.state):
            #   if goal_test(child.state):
@@ -214,6 +192,6 @@ def breadth_first():
 
 print('Initial state:\n')
 print_pattern(puzzle)
-actions(puzzle)
+action_set()
 
 # EOF.

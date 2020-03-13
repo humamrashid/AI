@@ -15,8 +15,8 @@ goal_state = np.array([(1,2,3), (8,0,4), (7,6,5)])
 puzzle = np.array([(1,4,3), (7,8,0), (6,2,5)])
 
 # Tracking positions of the tiles in the 'world configuration'. 0-value tile is the blank space.
-# Initial values match the initial state. Values are only altered through the switch_tile()
-# function (and others calling it) and kept in sync wtih the world configuration.
+# Initial values match the initial state. Values are only altered through the switch_tiles()
+# function and kept in sync wtih the world configuration.
 tiles = {
         0: (1, 2),
         1: (0, 0),
@@ -102,39 +102,38 @@ def switch_tiles(t1, t2):
     tiles[t1] = tiles[t2]
     tiles[t2] = tmp_pos
 
-# Returns a possible action set (tiles blank tile can be switched with) based on current position of
-# the blank tile.
+# Returns possible action set, a mapping of a directions ('up', 'down', 'left', 'right') to a
+# specfic tile. Depends on current state of world configuration.
 def action_set():
-    acts = dict({'up': None, 'down': None, 'left': None, 'right': None})
+    actions = dict({'up': None, 'down': None, 'left': None, 'right': None})
     t = tile_above(0)
     if t != -1:
-        acts['up'] = t
+        actions['up'] = t
     else:
-        del acts['up']
+        del actions['up']
     t = tile_below(0)
     if t != -1:
-        acts['down'] = t
+        actions['down'] = t
     else:
-        del acts['down']
+        del actions['down']
     t = tile_left(0)
     if t != -1:
-        acts['left'] = t
+        actions['left'] = t
     else:
-        del acts['left']
+        del actions['left']
     t = tile_right(0)
     if t != -1:
-        acts['right'] = t
+        actions['right'] = t
     else:
-        del acts['right']
-    print(acts)
-    return acts
+        del actions['right']
+    return actions
 
-def result(state, action):
-    global puzzle
-    puzzle = state.copy()
-
-def child_node(parent, action):
-    return Node(result(parent.state, action), parent, action, parent.path_cost, + 1)
+def child_node(parent, act):
+    temp = puzzle.copy()
+    print(f"Switching 0 with {act[1]}")
+    switch_tiles(0, act[1])
+    puzzle = temp
+    return Node(puzzle.copy(), parent, act[0], parent.path_cost + 1)
 
 def empty(struct):
     return True if len(struct) == 0 else False
@@ -153,16 +152,13 @@ def in_frontier(s):
     return False
 
 def solution(node):
-    global done
     solution_stack = []
-    solution_stack.append(node.state)
+    solution_stack.append(node)
     p = node.parent
     while p != None:
-        solution_stack.append(p.state)
+        solution_stack.append(p)
         p = p.parent
-    while len(solution_stack) != 0:
-        print_pattern(solution_stack.pop())
-        print()
+    return solution_stack
 
 def goal_test(state):
     global goal_state
@@ -170,28 +166,46 @@ def goal_test(state):
 
 def breadth_first():
     done = False
-    global init_state, done
+    global init_state
     node = Node(init_state, None, None, 0)
     if goal_test(node.state):
-        solution(node)
+        return solution(node)
         done = True
     frontier.append(node)
     while not done:
        if empty(frontier):
-           print("Failed to find solution!")
-           done = True
+           return None
        node = frontier.popleft()
        add_explored(node.state)
-       acts = action_set()
-       for a in acts:
-           child = child_node(node, a)
-           #if not in_explored(child.state) and not in_frontier(child.state):
-           #   if goal_test(child.state):
-           #       solution(child)
-           #   frontier.append(child)
+       actions = action_set()
+       print("Actions: ", actions)
+       for act in actions.items():
+           child = child_node(node, act)
+           print("Child:\n", child.state)
+       #   if not in_explored(child.state) and not in_frontier(child.state):
+       #      if goal_test(child.state):
+       #          return solution(child)
+       #      frontier.append(child)
 
 print('Initial state:\n')
-print_pattern(puzzle)
-action_set()
+print_pattern(init_state)
+solution = breadth_first()
+if solution == None:
+    print("Frontier: ", frontier)
+    print("Explored: ", explored)
+    print("Failed to find solution!")
+else:
+    while len(solution) != 0:
+        n = solution.pop()
+        print(f"\n{n.action}:\n")
+        print_pattern(n.state)
+        print()
+
+#node = Node(init_state, None, None, 0)
+#a = action_set()
+#for i in  a.items():
+    #child = child_node(node, i)
+    #print(child.action)
+    #print_pattern(child.state)
 
 # EOF.

@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
-# Solution for 8-puzzle using breadth-first search.
+# Solution for 8-puzzle using breadth-first search. This implementation is a specialized version of
+# general graph-search.
 # The tile board is represented as a 2D array with elements numbered according to the tile and the
 # blank space has the value 0.
 

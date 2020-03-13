@@ -1,11 +1,12 @@
 #!/usr/bin/python3
 
-# Solution for 8-puzzle using breadth-first search.
+# Solution for 8-puzzle using depth-first search. Specifically, a iterative-deepening depth-limited
+# search is implemented. This implementation is a specialized version of general tree-search.
 # The tile board is represented as a 2D array with elements numbered according to the tile and the
 # blank space has the value 0.
 
 import numpy as np
-from collections import deque
+from enum import Enum
 
 # Initial state (predefined)
 init_state = np.array([(1,4,3), (7,8,0), (6,2,5)])
@@ -13,8 +14,8 @@ init_state = np.array([(1,4,3), (7,8,0), (6,2,5)])
 # Goal state (predefined)
 goal_state = np.array([(1,2,3), (8,0,4), (7,6,5)])
 
-# Queue for 'frontier' or 'open list'.
-frontier = deque()
+# Stack for 'frontier' or 'open list'.
+frontier = []
 
 # Set for 'explored' set or 'closed list'.
 explored = set()
@@ -26,6 +27,10 @@ class Node:
         self.parent = parent
         self.action = action
         self.path_cost = cost
+
+class NoSolution(Enum):
+    CUTOFF = "cutoff"
+    FAILURE = "failure"
 
 # Child node is based on the parent and action taken.
 def child_node(parent, act):
@@ -144,35 +149,37 @@ def solution(node):
 def goal_test(state):
     return True if np.array_equal(state, goal_state) else False
 
-def breadth_first():
-    node = Node(init_state, None, None, 0)
+def recursive_dls(node, limit):
     if goal_test(node.state):
         return solution(node)
-    frontier.append(node)
-    while True:
-       if empty(frontier):
-           return None
-       node = frontier.popleft()
-       add_explored(node.state)
-       actions = action_set(node.state)
-       for act in actions.items():
-           child = child_node(node, act)
-           if not in_explored(child.state) and not in_frontier(child.state):
-               if goal_test(child.state):
-                   return solution(child)
-               frontier.append(child)
+    elif limit == 0:
+        return NoSolution.CUTOFF
+    else:
+        cutoff = False
+        actions = action_set(node.state)
+        for act in actions.items():
+            child = child_node(node, act)
+            result = recursive_dls(child, limit - 1)
+            if result == NoSolution.CUTOFF:
+                cutoff = True
+            else if result != NoSolution.FAILURE:
+                return result
+        return NoSolution.CUTOFF if cutoff else NoSolution.FAILURE
+
+def depth_limited(limit):
+    return recursive_dls(Node(init_state, None, None, 0), limit)
 
 print('Initial state:\n')
 print_pattern(init_state)
-solution = breadth_first()
-if solution == None:
-    print("Failed to find solution!")
-else:
-    while len(solution) != 0:
-        n = solution.pop()
-        if n.action != None:
-            print(f"\n{n.action}:\n")
-            print_pattern(n.state)
-    print(f"\n*** Solved ***\nPath Cost: {n.path_cost}")
+#solution = depth_first()
+#if solution == None:
+    #print("Failed to find solution!")
+#else:
+    #while len(solution) != 0:
+        #n = solution.pop()
+        #if n.action != None:
+            #print(f"\n{n.action}:\n")
+            #print_pattern(n.state)
+    #print(f"\n*** Solved ***\nPath Cost: {n.path_cost}")
 
 # EOF.

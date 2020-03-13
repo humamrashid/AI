@@ -1,6 +1,8 @@
 #!/usr/bin/python3
 
 # Solution for 8-puzzle using breadth-first search.
+# The tile board is represented as a 2D array with elements numbered according to the tile and the
+# blank space has the value 0.
 
 import numpy as np
 from collections import deque

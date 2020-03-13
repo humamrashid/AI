@@ -82,8 +82,8 @@ def switch_tiles(state, r1, c1, r2, c2):
     s[r1, c1] = temp
     return s
 
-# Returns possible action set, a mapping of a directions ('up', 'down', 'left', 'right') to a
-# specfic movement and the resulting state.
+# Returns possible action set, a mapping of directions ('up', 'down', 'left', 'right') to specific
+# movements and the resulting states.
 def action_set(state):
     actions = dict({'up': None, 'down': None, 'left': None, 'right': None})
     (r1, c1, r2, c2) = tile_above(state)

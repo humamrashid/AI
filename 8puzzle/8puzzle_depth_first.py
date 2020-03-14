@@ -24,6 +24,7 @@ class Node:
         self.action = action
         self.path_cost = cost
 
+# Types of "no solution found", either failure or cutoff because of depth-limit.
 class NoSolution(Enum):
     CUTOFF = "cutoff"
     FAILURE = "failure"

@@ -6,6 +6,7 @@
 # blank space has the value 0.
 
 import numpy as np
+import itertools
 from enum import Enum
 
 # Initial state (predefined)
@@ -137,6 +138,7 @@ def empty(struct):
 
 # Follow the child node back to the parent and stack the chain.
 def solution(node):
+    print("Building solution stack")
     solution_stack = []
     solution_stack.append(node)
     p = node.parent
@@ -162,24 +164,31 @@ def recursive_dls(node, limit):
             result = recursive_dls(child, limit - 1)
             if result == NoSolution.CUTOFF:
                 cutoff = True
-            else if result != NoSolution.FAILURE:
+            elif result != NoSolution.FAILURE:
                 return result
         return NoSolution.CUTOFF if cutoff else NoSolution.FAILURE
 
 def depth_limited(limit):
     return recursive_dls(Node(init_state, None, None, 0), limit)
 
+def iterative_deep():
+    for depth in itertools.count():
+        print(f"Trying depth: {depth}")
+        result = depth_limited(depth)
+        if result != NoSolution.CUTOFF:
+            return result
+
 print('Initial state:\n')
 print_pattern(init_state)
-#solution = depth_first()
-#if solution == None:
-    #print("Failed to find solution!")
-#else:
-    #while len(solution) != 0:
-        #n = solution.pop()
-        #if n.action != None:
-            #print(f"\n{n.action}:\n")
-            #print_pattern(n.state)
-    #print(f"\n*** Solved ***\nPath Cost: {n.path_cost}")
+solution = iterative_deep()
+if solution == NoSolution.FAILURE:
+    print("Failed to find solution!")
+else:
+    while len(solution) != 0:
+        n = solution.pop()
+        if n.action != None:
+            print(f"\n{n.action}:\n")
+            print_pattern(n.state)
+    print(f"\n*** Solved ***\nPath Cost: {n.path_cost}")
 
 # EOF.

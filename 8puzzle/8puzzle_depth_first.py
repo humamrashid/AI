@@ -1,7 +1,8 @@
 #!/usr/bin/python3
 
 # Solution for 8-puzzle using depth-first search. Specifically, a iterative-deepening depth-limited
-# search is implemented. This implementation is a specialized version of general tree-search.
+# search is implemented. This implementation is a specialized version of general tree-search. No
+# heuristic is used in this implementation.
 # The tile board is represented as a 2D array with elements numbered according to the tile and the
 # blank space has the value 0.
 
@@ -14,12 +15,6 @@ init_state = np.array([(1,4,3), (7,8,0), (6,2,5)])
 
 # Goal state (predefined)
 goal_state = np.array([(1,2,3), (8,0,4), (7,6,5)])
-
-# Stack for 'frontier' or 'open list'.
-frontier = []
-
-# Set for 'explored' set or 'closed list'.
-explored = set()
 
 # Search tree node structure.
 class Node:
@@ -116,35 +111,16 @@ def action_set(state):
         del actions['left']
     return actions
 
-# Add something to the explored set.
-def add_explored(state):
-    explored.add(tuple(map(tuple, state)))
-
-# Check if something is in the explored set or not.
-def in_explored(state):
-    s = tuple(map(tuple, state))
-    return True if s in explored else False
-
-# Check if something is in the frontier or not.
-def in_frontier(s):
-    for node in frontier:
-        if np.array_equal(node.state, s):
-            return True
-    return False
-
-# Check if a structure (e.g., frontier) is empty.
-def empty(struct):
-    return True if len(struct) == 0 else False
-
 # Follow the child node back to the parent and stack the chain.
 def solution(node):
-    print("Building solution stack")
+    print("solution found, building solution stack...", end="")
     solution_stack = []
     solution_stack.append(node)
     p = node.parent
     while p != None:
         solution_stack.append(p)
         p = p.parent
+    print("done:")
     return solution_stack
 
 # Test if the given state matches goal state.
@@ -173,13 +149,16 @@ def depth_limited(limit):
 
 def iterative_deep():
     for depth in itertools.count():
-        print(f"Trying depth: {depth}")
+        print(f"Trying depth: {depth}...", end="")
         result = depth_limited(depth)
         if result != NoSolution.CUTOFF:
             return result
+        else:
+            print("no solution found")
 
 print('Initial state:\n')
 print_pattern(init_state)
+print()
 solution = iterative_deep()
 if solution == NoSolution.FAILURE:
     print("Failed to find solution!")

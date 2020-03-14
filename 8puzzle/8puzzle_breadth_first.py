@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 # Solution for 8-puzzle using breadth-first search. This implementation is a specialized version of
-# general graph-search.
+# general graph-search. No heuristic is used in this implementation.
 # The tile board is represented as a 2D array with elements numbered according to the tile and the
 # blank space has the value 0.
 
@@ -133,12 +133,14 @@ def empty(struct):
 
 # Follow the child node back to the parent and stack the chain.
 def solution(node):
+    print("Building solution stack...", end="")
     solution_stack = []
     solution_stack.append(node)
     p = node.parent
     while p != None:
         solution_stack.append(p)
         p = p.parent
+    print("done:")
     return solution_stack
 
 # Test if the given state matches goal state.
@@ -165,6 +167,7 @@ def breadth_first():
 
 print('Initial state:\n')
 print_pattern(init_state)
+print()
 solution = breadth_first()
 if solution == None:
     print("Failed to find solution!")

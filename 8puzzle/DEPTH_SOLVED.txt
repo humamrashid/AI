@@ -1,0 +1,224 @@
+Initial state:
+
+*******************
+|  1  |  4  |  3  | 
+*******************
+|  7  |  8  |     | 
+*******************
+|  6  |  2  |  5  | 
+*******************
+
+Trying depth: 0...no solution found
+Trying depth: 1...no solution found
+Trying depth: 2...no solution found
+Trying depth: 3...no solution found
+Trying depth: 4...no solution found
+Trying depth: 5...no solution found
+Trying depth: 6...no solution found
+Trying depth: 7...no solution found
+Trying depth: 8...no solution found
+Trying depth: 9...no solution found
+Trying depth: 10...no solution found
+Trying depth: 11...no solution found
+Trying depth: 12...no solution found
+Trying depth: 13...no solution found
+Trying depth: 14...no solution found
+Trying depth: 15...no solution found
+Trying depth: 16...no solution found
+Trying depth: 17...solution found, building solution stack...done:
+
+left:
+
+*******************
+|  1  |  4  |  3  | 
+*******************
+|  7  |     |  8  | 
+*******************
+|  6  |  2  |  5  | 
+*******************
+
+up:
+
+*******************
+|  1  |     |  3  | 
+*******************
+|  7  |  4  |  8  | 
+*******************
+|  6  |  2  |  5  | 
+*******************
+
+right:
+
+*******************
+|  1  |  3  |     | 
+*******************
+|  7  |  4  |  8  | 
+*******************
+|  6  |  2  |  5  | 
+*******************
+
+down:
+
+*******************
+|  1  |  3  |  8  | 
+*******************
+|  7  |  4  |     | 
+*******************
+|  6  |  2  |  5  | 
+*******************
+
+left:
+
+*******************
+|  1  |  3  |  8  | 
+*******************
+|  7  |     |  4  | 
+*******************
+|  6  |  2  |  5  | 
+*******************
+
+down:
+
+*******************
+|  1  |  3  |  8  | 
+*******************
+|  7  |  2  |  4  | 
+*******************
+|  6  |     |  5  | 
+*******************
+
+right:
+
+*******************
+|  1  |  3  |  8  | 
+*******************
+|  7  |  2  |  4  | 
+*******************
+|  6  |  5  |     | 
+*******************
+
+up:
+
+*******************
+|  1  |  3  |  8  | 
+*******************
+|  7  |  2  |     | 
+*******************
+|  6  |  5  |  4  | 
+*******************
+
+up:
+
+*******************
+|  1  |  3  |     | 
+*******************
+|  7  |  2  |  8  | 
+*******************
+|  6  |  5  |  4  | 
+*******************
+
+left:
+
+*******************
+|  1  |     |  3  | 
+*******************
+|  7  |  2  |  8  | 
+*******************
+|  6  |  5  |  4  | 
+*******************
+
+down:
+
+*******************
+|  1  |  2  |  3  | 
+*******************
+|  7  |     |  8  | 
+*******************
+|  6  |  5  |  4  | 
+*******************
+
+right:
+
+*******************
+|  1  |  2  |  3  | 
+*******************
+|  7  |  8  |     | 
+*******************
+|  6  |  5  |  4  | 
+*******************
+
+down:
+
+*******************
+|  1  |  2  |  3  | 
+*******************
+|  7  |  8  |  4  | 
+*******************
+|  6  |  5  |     | 
+*******************
+
+left:
+
+*******************
+|  1  |  2  |  3  | 
+*******************
+|  7  |  8  |  4  | 
+*******************
+|  6  |     |  5  | 
+*******************
+
+left:
+
+*******************
+|  1  |  2  |  3  | 
+*******************
+|  7  |  8  |  4  | 
+*******************
+|     |  6  |  5  | 
+*******************
+
+up:
+
+*******************
+|  1  |  2  |  3  | 
+*******************
+|     |  8  |  4  | 
+*******************
+|  7  |  6  |  5  | 
+*******************
+
+right:
+
+*******************
+|  1  |  2  |  3  | 
+*******************
+|  8  |     |  4  | 
+*******************
+|  7  |  6  |  5  | 
+*******************
+
+*** Solved ***
+Path Cost: 17
+	Command being timed: "./8puzzle_depth_first.py"
+	User time (seconds): 1088.19
+	System time (seconds): 0.02
+	Percent of CPU this job got: 99%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 18:08.25
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 26452
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 4222
+	Voluntary context switches: 1
+	Involuntary context switches: 6235
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 8
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0

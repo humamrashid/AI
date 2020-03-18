@@ -18,10 +18,47 @@ goal_state = np.array([(1,2,3), (8,0,4), (7,6,5)])
 class Node:
     def __init__(self, state):
         self.state = state
-        self.h_cost = heuristic_cost(state)
+        self.h_cost = self.heuristic_cost()
 
-    def heuristic_cost(state):
-        return
+    # Heuristic used: 'Manhattan Distance'
+    def heuristic_cost(self):
+        # Tile 0.
+        (t0_r, t0_c) = np.where(self.state == 0)
+        (t0_gr, t0_gc) = np.where(goal_state == 0)
+        t0_dis = abs(t0_gr - t0_r) + abs(t0_gc - t0_c)
+        # Tile 1.
+        (t1_r, t1_c) = np.where(self.state == 1)
+        (t1_gr, t1_gc) = np.where(goal_state == 1)
+        t1_dis = abs(t1_gr - t1_r) + abs(t1_gc - t1_c)
+        # Tile 2.
+        (t2_r, t2_c) = np.where(self.state == 2)
+        (t2_gr, t2_gc) = np.where(goal_state == 2)
+        t2_dis = abs(t2_gr - t2_r) + abs(t2_gc - t2_c)
+        # Tile 3.
+        (t3_r, t3_c) = np.where(self.state == 3)
+        (t3_gr, t3_gc) = np.where(goal_state == 3)
+        t3_dis = abs(t3_gr - t3_r) + abs(t3_gc - t3_c)
+        # Tile 4.
+        (t4_r, t4_c) = np.where(self.state == 4)
+        (t4_gr, t4_gc) = np.where(goal_state == 4)
+        t4_dis = abs(t4_gr - t4_r) + abs(t4_gc - t4_c)
+        # Tile 5.
+        (t5_r, t5_c) = np.where(self.state == 5)
+        (t5_gr, t5_gc) = np.where(goal_state == 5)
+        t5_dis = abs(t5_gr - t5_r) + abs(t5_gc - t5_c)
+        # Tile 6.
+        (t6_r, t6_c) = np.where(self.state == 6)
+        (t6_gr, t6_gc) = np.where(goal_state == 6)
+        t6_dis = abs(t6_gr - t6_r) + abs(t6_gc - t6_c)
+        # Tile 7.
+        (t7_r, t7_c) = np.where(self.state == 7)
+        (t7_gr, t7_gc) = np.where(goal_state == 7)
+        t7_dis = abs(t7_gr - t7_r) + abs(t7_gc - t7_c)
+        # Tile 8.
+        (t8_r, t8_c) = np.where(self.state == 8)
+        (t8_gr, t8_gc) = np.where(goal_state == 8)
+        t8_dis = abs(t8_gr - t8_r) + abs(t8_gc - t8_c)
+        return sum([t0_dis, t1_dis, t2_dis, t3_dis, t4_dis, t5_dis, t6_dis, t7_dis, t8_dis])
 
 # Print a tile pattern from given 'state'.
 def print_pattern(state):
@@ -103,6 +140,10 @@ def hill_climbing():
 
 print('Initial state:\n')
 print_pattern(init_state)
+print('Goal state:\n')
+print_pattern(goal_state)
+n = Node(init_state)
+print(f"Node hc: {n.h_cost}")
 #solution_state = hill_climbing()
 #print_pattern(solution_state)
 print("\n*** Solved ***")

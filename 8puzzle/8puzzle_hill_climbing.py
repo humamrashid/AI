@@ -109,7 +109,8 @@ def goal_test(state):
 def hill_climbing():
     current = Node(init_state)
     while True:
-        neighbor = #lowest_cost_successor
+        #neighbor = #lowest_cost_successor
+        print(neighbor.state)
         if neighbor.h_cost >= current.h_cost:
             return current.state
         current = neighbor
@@ -117,6 +118,8 @@ def hill_climbing():
 
 print('Initial state:\n')
 print_pattern(init_state)
-print()
+#solution_state = hill_climbing()
+#print_pattern(solution_state)
+print("\n*** Solved ***")
 
 # EOF.

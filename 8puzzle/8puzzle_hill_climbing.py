@@ -76,35 +76,20 @@ def switch_tiles(state, r1, c1, r2, c2):
     s[r1, c1] = temp
     return s
 
-# Returns possible action set, a mapping of directions ('up', 'down', 'left', 'right') to specific
-# movements and the resulting states.
-def action_set(state):
-    actions = dict({'up': None, 'down': None, 'left': None, 'right': None})
+# Returns lowest cost successor node for node of given state.
+def lowest_cost_succesor(state):
     (r1, c1, r2, c2) = tile_above(state)
     if r1 != None:
-        actions['up'] = switch_tiles(state, r1, c1, r2, c2)
-    else:
-        del actions['up']
+        up_node = Node(switch_tiles(state, r1, c1, r2, c2))
     (r1, c1, r2, c2) = tile_below(state)
     if r1 != None:
-        actions['down'] = switch_tiles(state, r1, c1, r2, c2)
-    else:
-        del actions['down']
+        down_node = Node(switch_tiles(state, r1, c1, r2, c2))
     (r1, c1, r2, c2) = tile_right(state)
     if r1 != None:
-        actions['right'] = switch_tiles(state, r1, c1, r2, c2)
-    else:
-        del actions['right']
+        right_node = Node(switch_tiles(state, r1, c1, r2, c2))
     (r1, c1, r2, c2) = tile_left(state)
     if r1 != None:
-        actions['left'] = switch_tiles(state, r1, c1, r2, c2)
-    else:
-        del actions['left']
-    return actions
-
-# Test if the given state matches goal state.
-def goal_test(state):
-    return True if np.array_equal(state, goal_state) else False
+        left_node = Node(switch_tiles(state, r1, c1, r2, c2))
 
 def hill_climbing():
     current = Node(init_state)

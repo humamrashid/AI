@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # Author: Humam Rashid
 
-# Solution for 8-puzzle using hill-climbing.
+# Solution for 8-puzzle using hill-climbing; heuristic used is 'Manhattan distance.'
 # The tile board is represented as a 2D array with elements numbered according to the tile and the
 # blank space has the value 0.
 
@@ -19,8 +19,6 @@ class Node:
     def __init__(self, state):
         self.state = state
         self.h_cost = self.heuristic_cost()
-
-    # Heuristic used: 'Manhattan Distance'
     def heuristic_cost(self):
         # Tile 0.
         (t0_r, t0_c) = np.where(self.state == 0)
@@ -58,7 +56,8 @@ class Node:
         (t8_r, t8_c) = np.where(self.state == 8)
         (t8_gr, t8_gc) = np.where(goal_state == 8)
         t8_dis = abs(t8_gr - t8_r) + abs(t8_gc - t8_c)
-        return sum([t0_dis, t1_dis, t2_dis, t3_dis, t4_dis, t5_dis, t6_dis, t7_dis, t8_dis])
+        return sum([int(t0_dis), int(t1_dis), int(t2_dis), int(t3_dis), int(t4_dis), int(t5_dis),\
+                int(t6_dis), int(t7_dis), int(t8_dis)])
 
 # Print a tile pattern from given 'state'.
 def print_pattern(state):
@@ -114,25 +113,36 @@ def switch_tiles(state, r1, c1, r2, c2):
     return s
 
 # Returns lowest cost successor node for node of given state.
-def lowest_cost_succesor(state):
+def lowest_cost_successor(state):
+    nodes = []
     (r1, c1, r2, c2) = tile_above(state)
     if r1 != None:
-        up_node = Node(switch_tiles(state, r1, c1, r2, c2))
+        nodes.append(Node(switch_tiles(state, r1, c1, r2, c2)))
     (r1, c1, r2, c2) = tile_below(state)
     if r1 != None:
-        down_node = Node(switch_tiles(state, r1, c1, r2, c2))
+        nodes.append(Node(switch_tiles(state, r1, c1, r2, c2)))
     (r1, c1, r2, c2) = tile_right(state)
     if r1 != None:
-        right_node = Node(switch_tiles(state, r1, c1, r2, c2))
+        nodes.append(Node(switch_tiles(state, r1, c1, r2, c2)))
     (r1, c1, r2, c2) = tile_left(state)
     if r1 != None:
-        left_node = Node(switch_tiles(state, r1, c1, r2, c2))
+        nodes.append(Node(switch_tiles(state, r1, c1, r2, c2)))
+    lowest = nodes[0]
+    num_nodes = len(nodes)
+    if (num_nodes > 1):
+        for i in range(1, num_nodes):
+            if nodes[i].h_cost <= lowest.h_cost:
+                lowest = nodes[i]
+    print("Lowest h: ", lowest.h_cost)
+    return lowest
+
 
 def hill_climbing():
     current = Node(init_state)
     while True:
-        #neighbor = #lowest_cost_successor
-        print(neighbor.state)
+        neighbor = lowest_cost_successor(current.state)
+        print_pattern(neighbor.state)
+        print(f"Curr h: {current.h_cost}, Neigh h: {neighbor.h_cost}")
         if neighbor.h_cost >= current.h_cost:
             return current.state
         current = neighbor
@@ -140,12 +150,10 @@ def hill_climbing():
 
 print('Initial state:\n')
 print_pattern(init_state)
+solution_state = hill_climbing()
+print_pattern(solution_state)
+print("\n*** Solved ***")
 print('Goal state:\n')
 print_pattern(goal_state)
-n = Node(init_state)
-print(f"Node hc: {n.h_cost}")
-#solution_state = hill_climbing()
-#print_pattern(solution_state)
-print("\n*** Solved ***")
 
 # EOF.

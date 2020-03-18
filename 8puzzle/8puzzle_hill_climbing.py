@@ -14,23 +14,14 @@ init_state = np.array([(1,4,3), (7,8,0), (6,2,5)])
 # Goal state (predefined)
 goal_state = np.array([(1,2,3), (8,0,4), (7,6,5)])
 
-# Queue for 'frontier' or 'open list'.
-frontier = deque()
-
-# Set for 'explored' set or 'closed list'.
-explored = set()
-
 # Search tree node structure.
 class Node:
-    def __init__(self, state, parent, action, cost):
+    def __init__(self, state):
         self.state = state
-        self.parent = parent
-        self.action = action
-        self.path_cost = cost
+        self.h_cost = heuristic_cost(state)
 
-# Child node is based on the parent and action taken.
-def child_node(parent, act):
-    return Node(act[1], parent, act[0], parent.path_cost + 1)
+    def heuristic_cost(state):
+        return
 
 # Print a tile pattern from given 'state'.
 def print_pattern(state):
@@ -111,72 +102,21 @@ def action_set(state):
         del actions['left']
     return actions
 
-# Add something to the explored set.
-def add_explored(state):
-    explored.add(tuple(map(tuple, state)))
-
-# Check if something is in the explored set or not.
-def in_explored(state):
-    s = tuple(map(tuple, state))
-    return True if s in explored else False
-
-# Check if something is in the frontier or not.
-def in_frontier(s):
-    for node in frontier:
-        if np.array_equal(node.state, s):
-            return True
-    return False
-
-# Check if a structure (e.g., frontier) is empty.
-def empty(struct):
-    return True if len(struct) == 0 else False
-
-# Follow the child node back to the parent and stack the chain.
-def solution(node):
-    print("Building solution stack...", end="")
-    solution_stack = []
-    solution_stack.append(node)
-    p = node.parent
-    while p != None:
-        solution_stack.append(p)
-        p = p.parent
-    print("done:")
-    return solution_stack
-
 # Test if the given state matches goal state.
 def goal_test(state):
     return True if np.array_equal(state, goal_state) else False
 
-def breadth_first():
-    node = Node(init_state, None, None, 0)
-    if goal_test(node.state):
-        return solution(node)
-    frontier.append(node)
+def hill_climbing():
+    current = Node(init_state)
     while True:
-       if empty(frontier):
-           return None
-       node = frontier.popleft()
-       add_explored(node.state)
-       actions = action_set(node.state)
-       for act in actions.items():
-           child = child_node(node, act)
-           if not in_explored(child.state) and not in_frontier(child.state):
-               if goal_test(child.state):
-                   return solution(child)
-               frontier.append(child)
+        neighbor = #lowest_cost_successor
+        if neighbor.h_cost >= current.h_cost:
+            return current.state
+        current = neighbor
+    return
 
 print('Initial state:\n')
 print_pattern(init_state)
 print()
-solution = breadth_first()
-if solution == None:
-    print("Failed to find solution!")
-else:
-    while len(solution) != 0:
-        n = solution.pop()
-        if n.action != None:
-            print(f"\n{n.action}:\n")
-            print_pattern(n.state)
-    print(f"\n*** Solved ***\nPath Cost: {n.path_cost}")
 
 # EOF.

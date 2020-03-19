@@ -56,8 +56,7 @@ class Node:
         (t8_r, t8_c) = np.where(self.state == 8)
         (t8_gr, t8_gc) = np.where(goal_state == 8)
         t8_dis = abs(t8_gr - t8_r) + abs(t8_gc - t8_c)
-        return sum([int(t0_dis), int(t1_dis), int(t2_dis), int(t3_dis), int(t4_dis), int(t5_dis),\
-                int(t6_dis), int(t7_dis), int(t8_dis)])
+        return int(sum([t0_dis, t1_dis, t2_dis, t3_dis, t4_dis, t5_dis, t6_dis, t7_dis, t8_dis]))
 
 # Print a tile pattern from given 'state'.
 def print_pattern(state):
@@ -131,7 +130,8 @@ def lowest_cost_successor(state):
     num_nodes = len(nodes)
     if (num_nodes > 1):
         for i in range(1, num_nodes):
-            if nodes[i].h_cost <= lowest.h_cost:
+            print("Nodes[i] => ", nodes[i].h_cost)
+            if nodes[i].h_cost < lowest.h_cost:
                 lowest = nodes[i]
     print("Lowest h: ", lowest.h_cost)
     return lowest
@@ -139,6 +139,7 @@ def lowest_cost_successor(state):
 
 def hill_climbing():
     current = Node(init_state)
+    print("Init h_cost: ", current.h_cost)
     while True:
         neighbor = lowest_cost_successor(current.state)
         print_pattern(neighbor.state)
@@ -146,7 +147,6 @@ def hill_climbing():
         if neighbor.h_cost >= current.h_cost:
             return current.state
         current = neighbor
-    return
 
 print('Initial state:\n')
 print_pattern(init_state)

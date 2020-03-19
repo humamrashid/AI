@@ -100,7 +100,7 @@ def lowest_cost_successor(state):
     num_nodes = len(nodes)
     if (num_nodes > 1):
         for i in range(1, num_nodes):
-            if nodes[i].h_cost < lowest.h_cost:
+            if nodes[i].h_cost <= lowest.h_cost:
                 lowest = nodes[i]
     same_cost.append(lowest)
     for i in range(0, num_nodes):
@@ -116,7 +116,7 @@ def hill_climbing():
         neighbor = lowest_cost_successor(current.state)
         print_pattern(neighbor.state)
         print(f"Curr h: {current.h_cost}, Neigh h: {neighbor.h_cost}")
-        if current.h_cost <= neighbor.h_cost:
+        if current.h_cost == 0:
             return current.state
         current = Node(neighbor.state)
 

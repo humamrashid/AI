@@ -6,7 +6,7 @@
 # blank space has the value 0.
 
 import numpy as np
-from collections import deque
+import random
 
 # Initial state (predefined)
 init_state = np.array([(1,4,3), (7,8,0), (6,2,5)])
@@ -20,43 +20,12 @@ class Node:
         self.state = state
         self.h_cost = self.heuristic_cost()
     def heuristic_cost(self):
-        # Tile 0.
-        (t0_r, t0_c) = np.where(self.state == 0)
-        (t0_gr, t0_gc) = np.where(goal_state == 0)
-        t0_dis = abs(t0_gr - t0_r) + abs(t0_gc - t0_c)
-        # Tile 1.
-        (t1_r, t1_c) = np.where(self.state == 1)
-        (t1_gr, t1_gc) = np.where(goal_state == 1)
-        t1_dis = abs(t1_gr - t1_r) + abs(t1_gc - t1_c)
-        # Tile 2.
-        (t2_r, t2_c) = np.where(self.state == 2)
-        (t2_gr, t2_gc) = np.where(goal_state == 2)
-        t2_dis = abs(t2_gr - t2_r) + abs(t2_gc - t2_c)
-        # Tile 3.
-        (t3_r, t3_c) = np.where(self.state == 3)
-        (t3_gr, t3_gc) = np.where(goal_state == 3)
-        t3_dis = abs(t3_gr - t3_r) + abs(t3_gc - t3_c)
-        # Tile 4.
-        (t4_r, t4_c) = np.where(self.state == 4)
-        (t4_gr, t4_gc) = np.where(goal_state == 4)
-        t4_dis = abs(t4_gr - t4_r) + abs(t4_gc - t4_c)
-        # Tile 5.
-        (t5_r, t5_c) = np.where(self.state == 5)
-        (t5_gr, t5_gc) = np.where(goal_state == 5)
-        t5_dis = abs(t5_gr - t5_r) + abs(t5_gc - t5_c)
-        # Tile 6.
-        (t6_r, t6_c) = np.where(self.state == 6)
-        (t6_gr, t6_gc) = np.where(goal_state == 6)
-        t6_dis = abs(t6_gr - t6_r) + abs(t6_gc - t6_c)
-        # Tile 7.
-        (t7_r, t7_c) = np.where(self.state == 7)
-        (t7_gr, t7_gc) = np.where(goal_state == 7)
-        t7_dis = abs(t7_gr - t7_r) + abs(t7_gc - t7_c)
-        # Tile 8.
-        (t8_r, t8_c) = np.where(self.state == 8)
-        (t8_gr, t8_gc) = np.where(goal_state == 8)
-        t8_dis = abs(t8_gr - t8_r) + abs(t8_gc - t8_c)
-        return int(sum([t0_dis, t1_dis, t2_dis, t3_dis, t4_dis, t5_dis, t6_dis, t7_dis, t8_dis]))
+        distances = []
+        for i in range(0, 9):
+            (r, c) = np.where(self.state == i)
+            (gr, gc) = np.where(goal_state == i)
+            distances.append(abs(gr - r) + abs(gc - c))
+        return int(sum(distances))
 
 # Print a tile pattern from given 'state'.
 def print_pattern(state):
@@ -114,6 +83,7 @@ def switch_tiles(state, r1, c1, r2, c2):
 # Returns lowest cost successor node for node of given state.
 def lowest_cost_successor(state):
     nodes = []
+    same_cost = []
     (r1, c1, r2, c2) = tile_above(state)
     if r1 != None:
         nodes.append(Node(switch_tiles(state, r1, c1, r2, c2)))
@@ -130,26 +100,27 @@ def lowest_cost_successor(state):
     num_nodes = len(nodes)
     if (num_nodes > 1):
         for i in range(1, num_nodes):
-            print("Nodes[i] => ", nodes[i].h_cost)
             if nodes[i].h_cost < lowest.h_cost:
                 lowest = nodes[i]
-    print("Lowest h: ", lowest.h_cost)
-    return lowest
+    same_cost.append(lowest)
+    for i in range(0, num_nodes):
+        if nodes[i].h_cost == lowest.h_cost:
+            same_cost.append(nodes[i])
+    return random.choice(same_cost)
 
 
 def hill_climbing():
     current = Node(init_state)
-    print("Init h_cost: ", current.h_cost)
+    print("Node: ", current.state)
     while True:
         neighbor = lowest_cost_successor(current.state)
         print_pattern(neighbor.state)
         print(f"Curr h: {current.h_cost}, Neigh h: {neighbor.h_cost}")
-        if neighbor.h_cost >= current.h_cost:
+        if current.h_cost <= neighbor.h_cost:
             return current.state
-        current = neighbor
+        current = Node(neighbor.state)
 
 print('Initial state:\n')
-print_pattern(init_state)
 solution_state = hill_climbing()
 print_pattern(solution_state)
 print("\n*** Solved ***")

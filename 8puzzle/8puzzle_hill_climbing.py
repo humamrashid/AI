@@ -32,8 +32,8 @@ class Node:
 
 class Solution:
     def __init__(self, state, found, update):
-        self.found = found
         self.node = Node(state)
+        self.found = found
         self.update = update
 
 # Print a tile pattern from given 'state'.
@@ -105,6 +105,7 @@ def lowest_cost_successor(state):
     (r1, c1, r2, c2) = tile_left(state)
     if r1 != None:
         nodes.append(Node(switch_tiles(state, r1, c1, r2, c2)))
+    return random.choice(nodes)
     lowest = nodes[0]
     num_nodes = len(nodes)
     if (num_nodes > 1):
@@ -115,7 +116,6 @@ def lowest_cost_successor(state):
         for i in range(0, num_nodes):
             if nodes[i].h_cost == lowest.h_cost:
                 same_cost.append(nodes[i])
-        print("same_cost = ", len(same_cost))
         if len(same_cost) == num_nodes:
             return random.choice(nodes)
         return random.choice(same_cost)
@@ -127,17 +127,17 @@ def hill_climbing(state, limit):
     current = Node(state)
     while count < limit:
         neighbor = lowest_cost_successor(current.state)
-        print_pattern(neighbor.state)
+        #print_pattern(neighbor.state)
         print(f"Limit: {limit}, Current h_cost: {current.h_cost}, Neighbor h_cost: {neighbor.h_cost}")
         if current.h_cost == 0:
             return Solution(current.state, True, False)
         current = Node(neighbor.state)
         count += 1
-    return Solution(None, False, False)
+    return Solution(current.state, False, True)
 
 def iterative_random_restart():
     result = Solution(None, False, False)
-    for limit in itertools.count():
+    while True:
         if result.found == False:
             if result.update == False:
                 random_state = init_state.copy()
@@ -145,8 +145,8 @@ def iterative_random_restart():
             else:
                 random_state = result.node.state.copy()
                 np.random.shuffle(random_state)
-            result = hill_climbing(random_state, limit)
-        if result.found == True:
+            result = hill_climbing(random_state, 100)
+        else:
             return result.node.state
 
 print('Initial state:\n')

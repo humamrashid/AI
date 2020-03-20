@@ -7,6 +7,7 @@
 
 import numpy as np
 import random
+import itertools
 
 # Initial state (predefined)
 init_state = np.array([(1,4,3), (7,8,0), (6,2,5)])
@@ -20,12 +21,20 @@ class Node:
         self.state = state
         self.h_cost = self.heuristic_cost()
     def heuristic_cost(self):
+        if self.state is None:
+            return None
         distances = []
         for i in range(0, 9):
             (r, c) = np.where(self.state == i)
             (gr, gc) = np.where(goal_state == i)
             distances.append(abs(gr - r) + abs(gc - c))
         return int(sum(distances))
+
+class Solution:
+    def __init__(self, state, found, update):
+        self.found = found
+        self.node = Node(state)
+        self.update = update
 
 # Print a tile pattern from given 'state'.
 def print_pattern(state):
@@ -102,26 +111,47 @@ def lowest_cost_successor(state):
         for i in range(1, num_nodes):
             if nodes[i].h_cost <= lowest.h_cost:
                 lowest = nodes[i]
-    same_cost.append(lowest)
-    for i in range(0, num_nodes):
-        if nodes[i].h_cost == lowest.h_cost:
-            same_cost.append(nodes[i])
-    return random.choice(same_cost)
+        same_cost.append(lowest)
+        for i in range(0, num_nodes):
+            if nodes[i].h_cost == lowest.h_cost:
+                same_cost.append(nodes[i])
+        print("same_cost = ", len(same_cost))
+        if len(same_cost) == num_nodes:
+            return random.choice(nodes)
+        return random.choice(same_cost)
+    return lowest
 
 
-def hill_climbing():
-    current = Node(init_state)
-    print("Node: ", current.state)
-    while True:
+def hill_climbing(state, limit):
+    count = 0;
+    current = Node(state)
+    while count < limit:
         neighbor = lowest_cost_successor(current.state)
         print_pattern(neighbor.state)
-        print(f"Curr h: {current.h_cost}, Neigh h: {neighbor.h_cost}")
+        print(f"Limit: {limit}, Current h_cost: {current.h_cost}, Neighbor h_cost: {neighbor.h_cost}")
         if current.h_cost == 0:
-            return current.state
+            return Solution(current.state, True, False)
         current = Node(neighbor.state)
+        count += 1
+    return Solution(None, False, False)
+
+def iterative_random_restart():
+    result = Solution(None, False, False)
+    for limit in itertools.count():
+        if result.found == False:
+            if result.update == False:
+                random_state = init_state.copy()
+                np.random.shuffle(random_state)
+            else:
+                random_state = result.node.state.copy()
+                np.random.shuffle(random_state)
+            result = hill_climbing(random_state, limit)
+        if result.found == True:
+            return result.node.state
 
 print('Initial state:\n')
-solution_state = hill_climbing()
+print_pattern(init_state)
+solution_state = iterative_random_restart()
 print_pattern(solution_state)
 print("\n*** Solved ***")
 print('Goal state:\n')

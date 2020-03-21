@@ -1,9 +1,9 @@
 #!/usr/bin/python3
 # Author: Humam Rashid
 
-# Solution for 8-puzzle using hill-climbing; heuristic used is 'Manhattan distance.'
-# The tile board is represented as a 2D array with elements numbered according to the tile and the
-# blank space has the value 0.
+# Solution for 8-puzzle using iterative random-restart hill-climbing; heuristic used is 'Manhattan
+# distance.' The tile board is represented as a 2D array with elements numbered according to the
+# tile and the blank space has the value 0.
 
 import numpy as np
 import random
@@ -122,8 +122,6 @@ def lowest_cost_successor(state):
             return random.choice(same_cost)
     return lowest
 
-#lowest_reached = dict()
-
 def hill_climbing(state, limit):
     count = 0;
     current = Node(state)
@@ -132,7 +130,7 @@ def hill_climbing(state, limit):
     while count < limit:
         neighbor = lowest_cost_successor(current.state)
         print_pattern(neighbor.state)
-        #print(f"Limit: {limit}, Current h_cost: {current.h_cost}, Neighbor h_cost: {neighbor.h_cost}")
+        print()
         if current.h_cost == 0:
             return Solution(current.state, True, False)
         if current.h_cost <= lowest.h_cost:
@@ -146,24 +144,25 @@ def hill_climbing(state, limit):
 
 def iterative_random_restart():
     result = Solution(None, False, False)
-    for limit in itertools.count(start=50, step=0):
+    for limit in itertools.count():
         if result.found == False:
-            if result.update == False:
-                random_state = init_state.copy()
-                np.random.shuffle(random_state)
-            else:
-                random_state = result.node.state
-                np.random.shuffle(random_state)
+            random_state = init_state
+            np.random.shuffle(random_state)
+            #if result.update == False:
+                #random_state = init_state
+                #np.random.shuffle(random_state)
+            #else:
+                #random_state = init_state
+                #np.random.shuffle(random_state)
             result = hill_climbing(random_state, limit)
         else:
             return result.node.state
 
 print('Initial state:\n')
 print_pattern(init_state)
+print()
 solution_state = iterative_random_restart()
 print_pattern(solution_state)
 print("\n*** Solved ***")
-print('Goal state:\n')
-print_pattern(goal_state)
 
 # EOF.

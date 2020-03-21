@@ -31,8 +31,8 @@ class Node:
             distances.append(abs(gr - r) + abs(gc - c))
         return int(sum(distances))
 
-# A 'solution' state, indicates if a solution state was found or the state is closer step
-# intermediary stage.
+# A 'solution' state, indicates if a solution state was found or the state is closer intermediary
+# stage.
 class Solution:
     def __init__(self, node, found, update):
         self.node = node

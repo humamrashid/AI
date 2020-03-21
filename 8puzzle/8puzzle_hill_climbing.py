@@ -92,7 +92,7 @@ def switch_tiles(state, r1, c1, r2, c2):
     s[r1, c1] = temp
     return s
 
-# Returns either lowest cost successor or random one, with prefernce for the former.
+# Returns either lowest cost successor or random one, with preference for the former.
 def successor(state):
     nodes = []
     same_cost = []

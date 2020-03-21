@@ -31,6 +31,8 @@ class Node:
             distances.append(abs(gr - r) + abs(gc - c))
         return int(sum(distances))
 
+# A 'solution' state, indicates if a solution state was found or the state is closer step
+# intermediary stage.
 class Solution:
     def __init__(self, node, found, update):
         self.node = node
@@ -90,7 +92,7 @@ def switch_tiles(state, r1, c1, r2, c2):
     s[r1, c1] = temp
     return s
 
-# Returns lowest cost successor node for node of given state.
+# Returns either lowest cost successor or random one, with prefernce for the former.
 def successor(state):
     nodes = []
     same_cost = []
@@ -150,14 +152,12 @@ def iterative_random_restart():
     for limit in itertools.count():
         if result.found == True:
             return result.node
-        random_state = init_state
-        np.random.shuffle(random_state)
-        #if result.update == False:
-            #random_state = init_state
-            #np.random.shuffle(random_state)
-        #else:
-            #random_state = init_state
-            #np.random.shuffle(random_state)
+        if result.update == False:
+            random_state = init_state
+            np.random.shuffle(random_state)
+        else:
+            random_state = result.node.state
+            np.random.shuffle(random_state)
         result = hill_climbing(random_state, limit)
 
 print('Initial state:\n')

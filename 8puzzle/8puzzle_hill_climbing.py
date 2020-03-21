@@ -19,8 +19,8 @@ goal_state = np.array([(1,2,3), (8,0,4), (7,6,5)])
 class Node:
     def __init__(self, state):
         self.state = state
-        self.h_cost = self.heuristic_cost()
-    def heuristic_cost(self):
+        self.h_cost = self.manhattan_distance()
+    def manhattan_distance(self):
         if self.state is None:
             return None
         distances = []
@@ -105,7 +105,9 @@ def lowest_cost_successor(state):
     (r1, c1, r2, c2) = tile_left(state)
     if r1 != None:
         nodes.append(Node(switch_tiles(state, r1, c1, r2, c2)))
-    return random.choice(nodes)
+    r = random.choice([0, 1, 2, 3])
+    if r == 0:
+        return random.choice(nodes)
     lowest = nodes[0]
     num_nodes = len(nodes)
     if (num_nodes > 1):
@@ -116,36 +118,43 @@ def lowest_cost_successor(state):
         for i in range(0, num_nodes):
             if nodes[i].h_cost == lowest.h_cost:
                 same_cost.append(nodes[i])
-        if len(same_cost) == num_nodes:
-            return random.choice(nodes)
-        return random.choice(same_cost)
+        if len(same_cost) > 1:
+            return random.choice(same_cost)
     return lowest
 
+#lowest_reached = dict()
 
 def hill_climbing(state, limit):
     count = 0;
     current = Node(state)
+    lowest = current
+    updated = False
     while count < limit:
         neighbor = lowest_cost_successor(current.state)
-        #print_pattern(neighbor.state)
-        print(f"Limit: {limit}, Current h_cost: {current.h_cost}, Neighbor h_cost: {neighbor.h_cost}")
+        print_pattern(neighbor.state)
+        #print(f"Limit: {limit}, Current h_cost: {current.h_cost}, Neighbor h_cost: {neighbor.h_cost}")
         if current.h_cost == 0:
             return Solution(current.state, True, False)
-        current = Node(neighbor.state)
+        if current.h_cost <= lowest.h_cost:
+            lowest = current
+            updated = True
+        current = neighbor
         count += 1
-    return Solution(current.state, False, True)
+    if updated:
+        return Solution(lowest.state, False, True)
+    return Solution(None, False, False)
 
 def iterative_random_restart():
     result = Solution(None, False, False)
-    while True:
+    for limit in itertools.count(start=50, step=0):
         if result.found == False:
             if result.update == False:
                 random_state = init_state.copy()
                 np.random.shuffle(random_state)
             else:
-                random_state = result.node.state.copy()
+                random_state = result.node.state
                 np.random.shuffle(random_state)
-            result = hill_climbing(random_state, 100)
+            result = hill_climbing(random_state, limit)
         else:
             return result.node.state
 

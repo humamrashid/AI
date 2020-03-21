@@ -17,8 +17,9 @@ goal_state = np.array([(1,2,3), (8,0,4), (7,6,5)])
 
 # Search tree node structure.
 class Node:
-    def __init__(self, state):
+    def __init__(self, state, direction):
         self.state = state
+        self.direction = direction
         self.h_cost = self.manhattan_distance()
     def manhattan_distance(self):
         if self.state is None:
@@ -31,8 +32,8 @@ class Node:
         return int(sum(distances))
 
 class Solution:
-    def __init__(self, state, found, update):
-        self.node = Node(state)
+    def __init__(self, node, found, update):
+        self.node = node
         self.found = found
         self.update = update
 
@@ -90,21 +91,21 @@ def switch_tiles(state, r1, c1, r2, c2):
     return s
 
 # Returns lowest cost successor node for node of given state.
-def lowest_cost_successor(state):
+def successor(state):
     nodes = []
     same_cost = []
     (r1, c1, r2, c2) = tile_above(state)
     if r1 != None:
-        nodes.append(Node(switch_tiles(state, r1, c1, r2, c2)))
+        nodes.append(Node(switch_tiles(state, r1, c1, r2, c2), 'up'))
     (r1, c1, r2, c2) = tile_below(state)
     if r1 != None:
-        nodes.append(Node(switch_tiles(state, r1, c1, r2, c2)))
+        nodes.append(Node(switch_tiles(state, r1, c1, r2, c2), 'down'))
     (r1, c1, r2, c2) = tile_right(state)
     if r1 != None:
-        nodes.append(Node(switch_tiles(state, r1, c1, r2, c2)))
+        nodes.append(Node(switch_tiles(state, r1, c1, r2, c2), 'right'))
     (r1, c1, r2, c2) = tile_left(state)
     if r1 != None:
-        nodes.append(Node(switch_tiles(state, r1, c1, r2, c2)))
+        nodes.append(Node(switch_tiles(state, r1, c1, r2, c2), 'left'))
     r = random.choice([0, 1, 2, 3])
     if r == 0:
         return random.choice(nodes)
@@ -124,45 +125,48 @@ def lowest_cost_successor(state):
 
 def hill_climbing(state, limit):
     count = 0;
-    current = Node(state)
+    current = Node(state, None)
     lowest = current
     updated = False
     while count < limit:
-        neighbor = lowest_cost_successor(current.state)
+        neighbor = successor(current.state)
+        if neighbor.direction is not None:
+            print(f"{neighbor.direction}:\n")
         print_pattern(neighbor.state)
         print()
         if current.h_cost == 0:
-            return Solution(current.state, True, False)
+            return Solution(current, True, False)
         if current.h_cost <= lowest.h_cost:
             lowest = current
             updated = True
         current = neighbor
         count += 1
     if updated:
-        return Solution(lowest.state, False, True)
+        return Solution(lowest, False, True)
     return Solution(None, False, False)
 
 def iterative_random_restart():
     result = Solution(None, False, False)
     for limit in itertools.count():
-        if result.found == False:
-            random_state = init_state
-            np.random.shuffle(random_state)
-            #if result.update == False:
-                #random_state = init_state
-                #np.random.shuffle(random_state)
-            #else:
-                #random_state = init_state
-                #np.random.shuffle(random_state)
-            result = hill_climbing(random_state, limit)
-        else:
-            return result.node.state
+        if result.found == True:
+            return result.node
+        random_state = init_state
+        np.random.shuffle(random_state)
+        #if result.update == False:
+            #random_state = init_state
+            #np.random.shuffle(random_state)
+        #else:
+            #random_state = init_state
+            #np.random.shuffle(random_state)
+        result = hill_climbing(random_state, limit)
 
 print('Initial state:\n')
 print_pattern(init_state)
 print()
-solution_state = iterative_random_restart()
-print_pattern(solution_state)
+solution = iterative_random_restart()
+if solution.direction is not None:
+    print(f"{solution.direction}:\n")
+print_pattern(solution.state)
 print("\n*** Solved ***")
 
 # EOF.

@@ -139,8 +139,6 @@ def hill_climbing(state, limit):
         neighbor = successor(current.state)
         if neighbor.direction is not None:
             print(f"{neighbor.direction}:\n")
-        else:
-            print("restart:\n")
         print_pattern(neighbor.state)
         print()
         current = neighbor

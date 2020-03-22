@@ -165,10 +165,7 @@ print('Initial state:\n')
 print_pattern(init_state)
 print()
 solution = iterative_random_restart()
-if solution.direction is not None:
-    print(f"{solution.direction}:\n")
-else:
-    print("restart:\n")
+print("Solution state:\n")
 print_pattern(solution.state)
 print("\n*** Solved ***")
 

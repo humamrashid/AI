@@ -139,6 +139,8 @@ def hill_climbing(state, limit):
         neighbor = successor(current.state)
         if neighbor.direction is not None:
             print(f"{neighbor.direction}:\n")
+        else:
+            print("restart:\n")
         print_pattern(neighbor.state)
         print()
         current = neighbor
@@ -165,6 +167,8 @@ print()
 solution = iterative_random_restart()
 if solution.direction is not None:
     print(f"{solution.direction}:\n")
+else:
+    print("restart:\n")
 print_pattern(solution.state)
 print("\n*** Solved ***")
 

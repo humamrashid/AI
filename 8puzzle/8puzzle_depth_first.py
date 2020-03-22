@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # Author: Humam Rashid
 
-# Solution for 8-puzzle using depth-first search. Specifically, a iterative-deepening depth-limited
+# Solution for 8-puzzle using depth-first search. Specifically, an iterative-deepening depth-limited
 # search is implemented. This implementation is a specialized version of general tree-search. No
 # heuristic is used in this implementation.
 # The tile board is represented as a 2D array with elements numbered according to the tile and the

@@ -131,16 +131,16 @@ def hill_climbing(state, limit):
     lowest = current
     updated = False
     while count < limit:
-        neighbor = successor(current.state)
-        if neighbor.direction is not None:
-            print(f"{neighbor.direction}:\n")
-        print_pattern(neighbor.state)
-        print()
         if current.h_cost == 0:
             return Solution(current, True, False)
         if current.h_cost <= lowest.h_cost:
             lowest = current
             updated = True
+        neighbor = successor(current.state)
+        if neighbor.direction is not None:
+            print(f"{neighbor.direction}:\n")
+        print_pattern(neighbor.state)
+        print()
         current = neighbor
         count += 1
     if updated:
@@ -154,10 +154,9 @@ def iterative_random_restart():
             return result.node
         if result.update == False:
             random_state = init_state
-            np.random.shuffle(random_state)
         else:
             random_state = result.node.state
-            np.random.shuffle(random_state)
+        np.random.shuffle(random_state)
         result = hill_climbing(random_state, limit)
 
 print('Initial state:\n')

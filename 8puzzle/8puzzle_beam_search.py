@@ -5,6 +5,7 @@
 # distance.' The tile board is represented as a 2D array with elements numbered according to the
 # tile and the blank space has the value 0.
 
+import sys
 import numpy as np
 import random
 import itertools
@@ -147,7 +148,7 @@ def hill_climbing(state, limit):
         return Solution(lowest, False, True)
     return Solution(None, False, False)
 
-def iterative_random_restart():
+def iterative_beam(k):
     result = Solution(None, False, False)
     for limit in itertools.count():
         if result.found == True:
@@ -159,10 +160,14 @@ def iterative_random_restart():
         np.random.shuffle(random_state)
         result = hill_climbing(random_state, limit)
 
+if len(sys.argv) != 2:
+    print(f"Usage: {sys.argv[0]}")
+    sys.exit(1)
+k = int(sys.argv[1])
 print('Initial state:\n')
 print_pattern(init_state)
 print()
-solution = iterative_random_restart()
+solution = iterative_beam(k)
 print("Solution state:\n")
 print_pattern(solution.state)
 print("\n*** Solved ***")

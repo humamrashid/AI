@@ -43,9 +43,9 @@ PL-TRUE?(s, m):
     return s if s == True or s == False
     return LOOKUP(s, m) if SYMBOL?(s)
     case (s)
-        when $\neg$: return not PL-TRUE?(s[0], m)
-        when $\lor$: return PL-TRUE?(s[0], m) or PL-TRUE?(s[1], m)
-        when $\land$: return PL-TRUE?(s[0], m) and PL-TRUE?(s[1], m)
+        when $\neg$: return (not PL-TRUE?(s[0], m))
+        when $\lor$: return (PL-TRUE?(s[0], m) or PL-TRUE?(s[1], m))
+        when $\land$: return (PL-TRUE?(s[0], m) and PL-TRUE?(s[1], m))
         when $\Rightarrow$: (not PL-TRUE?(s[0], m)) or PL-TRUE?(s[1], m)
         when $\Leftrightarrow$: PL-TRUE?(s[0], m) iff PL-TRUE?(s[1], m)
     end

@@ -5,6 +5,11 @@
 \documentclass{scrartcl}
 \usepackage[a4paper, margin=1in]{geometry}
 \usepackage[shortlabels]{enumitem}
+\usepackage{listings}
+\lstset {
+    basicstyle=\ttfamily,
+    mathescape
+}
 \begin{document}
 
 \begin{flushleft}
@@ -30,7 +35,23 @@ We cannot deduce deduce from this premise whether the unicorn is mythical or not
 deduce that in all $2^5$ models, the unicorn is horned and it is magical.
 \bigskip
 \\
-\textbf{7.3} Given the premise, we can deduce the following:
+\textbf{7.3}
+\begin{enumerate}[(a)]
+    \item Ruby-like pseudo-code for recursive function \verb|PL-TRUE?(s, m)|:
+        \begin{lstlisting}
+PL-TRUE?(s, m):
+    return s if s == True or s == False
+    return LOOKUP(s, m) if SYMBOL?(s)
+    case (s)
+        when $\neg$: return not PL-TRUE?(s[0], m)
+        when $\lor$: return PL-TRUE?(s[0], m) or PL-TRUE?(s[1], m)
+        when $\land$: return PL-TRUE?(s[0], m) and PL-TRUE?(s[1], m)
+        when $\Rightarrow$: (not PL-TRUE?(s[0], m)) or PL-TRUE?(s[1], m)
+        when $\Leftrightarrow$: PL-TRUE?(s[0], m) iff PL-TRUE?(s[1], m)
+    end
+end
+        \end{lstlisting}
+\end{enumerate}
 
 \end{document}
 

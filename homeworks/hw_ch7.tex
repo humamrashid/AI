@@ -42,15 +42,22 @@ deduce that in all $2^5$ models, the unicorn is horned and it is magical.
 PL-TRUE?(s, m):
     return s if s == True or s == False
     return LOOKUP(s, m) if SYMBOL?(s)
-    case (s)
-        when $\neg$: return (not PL-TRUE?(s[0], m))
-        when $\lor$: return (PL-TRUE?(s[0], m) or PL-TRUE?(s[1], m))
-        when $\land$: return (PL-TRUE?(s[0], m) and PL-TRUE?(s[1], m))
-        when $\Rightarrow$: (not PL-TRUE?(s[0], m)) or PL-TRUE?(s[1], m)
-        when $\Leftrightarrow$: PL-TRUE?(s[0], m) iff PL-TRUE?(s[1], m)
+    case (s):
+        when $\neg$:
+            return (not PL-TRUE?(s[0], m))
+        when $\lor$:
+            return (PL-TRUE?(s[0], m) or PL-TRUE?(s[1], m))
+        when $\land$:
+            return (PL-TRUE?(s[0], m) and PL-TRUE?(s[1], m))
+        when $\Rightarrow$:
+            (not PL-TRUE?(s[0], m)) or PL-TRUE?(s[1], m)
+        when $\Leftrightarrow$:
+            PL-TRUE?(s[0], m) iff PL-TRUE?(s[1], m)
     end
 end
         \end{lstlisting}
+        where \verb|s| is a literal, symbol or zero-indexed array of symbols and \verb|and|,
+        \verb|or|, \verb|iff| are keyword constructs used in the language as in propositional logic.
 \end{enumerate}
 
 \end{document}

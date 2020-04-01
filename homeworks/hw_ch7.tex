@@ -65,6 +65,19 @@ end
             \item False $\land$ \emph{P} $\land$ \emph{Q}, which always evaluates to False.
             \item \emph{P} $\land$ $\neg$\emph{P}, which always evaluates to False.
         \end{enumerate}
+    \item A general algorithm for partial models in propositional logic would need to evaluate empty
+        models, i.e., models with no assignments. Thus, this algorithm would need to determine both
+        validity and unsatisfiability, which are Co-$\mathcal{NP}$-Complete and
+        $\mathcal{NP}$-Complete, respectively.
+    \item A modified \verb|PL-TRUE?| algorithm which can determine truth values of some partial
+        models can be the the same as the above given \verb|PL-TRUE?| with the additional feature of
+        short-circuit evalutation for its \verb|and| and \verb|or| keyword operators similar to what
+        is found in the Python programming language (or equivalently \verb|&&| and \verb:||: in
+        C or Java). Some examples of partial models where this would not work include (again, assume
+        truth values of \emph{P} and \emph{Q} are unknown):
+        \begin{enumerate}[(i)]
+            \item \emph{P} $\land$ $\neg$\emph{P}
+        \end{enumerate}
 \end{enumerate}
 
 \end{document}

@@ -58,12 +58,11 @@ end
 \end{lstlisting}
         where \verb|s| is a literal, symbol or zero-indexed array of symbols and \verb|and|,
         \verb|or|, \verb|iff| are keyword constructs used in the language as in propositional logic.
-    \item For the following examples, we assume \emph{P} and \emph{Q} to be symbols with unknown
-        truth value:
+    \item For the following examples, we assume $P$ and $Q$ to be symbols with unknown truth value:
         \begin{enumerate}[(i)]
-            \item True $\lor$ \emph{P}, which always evaluates to True.
-            \item False $\land$ \emph{P} $\land$ \emph{Q}, which always evaluates to False.
-            \item \emph{P} $\land$ $\neg$\emph{P}, which always evaluates to False.
+            \item $True \lor P$, which always evaluates to $True$.
+            \item $False \land P \land Q$, which always evaluates to $False$.
+            \item $P \land \neg P$, which always evaluates to $False$.
         \end{enumerate}
     \item A general algorithm for partial models in propositional logic would need to evaluate empty
         models, i.e., models with no assignments. Thus, this algorithm would need to determine both
@@ -73,17 +72,31 @@ end
         models can be the the same as the above given \verb|PL-TRUE?| with the additional feature of
         short-circuit evalutation for its \verb|and| and \verb|or| keyword operators similar to what
         is found in the Python programming language (or equivalently \verb|&&| and \verb:||: in
-        C or Java). Some examples of partial models where this would not work include (assume that
-        the truth value of \emph{P} is unknown):
+        C or Java). Some examples of partial models where this would \emph{not} work include (assume
+        that the truth value of $P$ is unknown):
         \begin{enumerate}[(i)]
-            \item \emph{P} $\land$ $\neg$\emph{P}.
-            \item \emph{P} $\lor$ True.
-            \item \emph{P} $\land$ False.
+            \item $P \land \neg P$.
+            \item $P \lor True$.
+            \item $P \land False$.
         \end{enumerate}
     \item Short-circuit evaluation as described above allows for a significant speedup and is the
         design utilized in common programming languages today.
 \end{enumerate}
 \textbf{7.4}
+\begin{enumerate}[(a)]
+    \item $False \models True$: True.
+    \item $True \models False$: False.
+    \item $(A \land B) \models (A \Leftrightarrow B)$: True.
+    \item
+    \item
+    \item
+    \item
+    \item
+    \item
+    \item
+    \item
+    \item
+\end{enumerate}
 
 \end{document}
 

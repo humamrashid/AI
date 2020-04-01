@@ -38,11 +38,11 @@ deduce that in all $2^5$ models, the unicorn is horned and it is magical.
 \textbf{7.3}
 \begin{enumerate}[(a)]
     \item Ruby-like pseudo-code for recursive function \verb|PL-TRUE?(s, m)|:
-        \begin{lstlisting}
+\begin{lstlisting}
 PL-TRUE?(s, m):
     return s if s == True or s == False
     return LOOKUP(s, m) if SYMBOL?(s)
-    case (s):
+    case (s)
         when $\neg$:
             return (not PL-TRUE?(s[0], m))
         when $\lor$:
@@ -55,9 +55,16 @@ PL-TRUE?(s, m):
             PL-TRUE?(s[0], m) iff PL-TRUE?(s[1], m)
     end
 end
-        \end{lstlisting}
+\end{lstlisting}
         where \verb|s| is a literal, symbol or zero-indexed array of symbols and \verb|and|,
         \verb|or|, \verb|iff| are keyword constructs used in the language as in propositional logic.
+    \item For the following examples, we assume \emph{P} and \emph{Q} to be symbols with unknown
+        truth value:
+        \begin{enumerate}[(i)]
+            \item True $\lor$ \emph{P}, which always evaluates to True.
+            \item False $\land$ \emph{P} $\land$ \emph{Q}, which always evaluates to False.
+            \item \emph{P} $\land$ $\neg$\emph{P}, which always evaluates to False.
+        \end{enumerate}
 \end{enumerate}
 
 \end{document}

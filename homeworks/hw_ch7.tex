@@ -73,12 +73,17 @@ end
         models can be the the same as the above given \verb|PL-TRUE?| with the additional feature of
         short-circuit evalutation for its \verb|and| and \verb|or| keyword operators similar to what
         is found in the Python programming language (or equivalently \verb|&&| and \verb:||: in
-        C or Java). Some examples of partial models where this would not work include (again, assume
-        truth values of \emph{P} and \emph{Q} are unknown):
+        C or Java). Some examples of partial models where this would not work include (assume that
+        the truth value of \emph{P} is unknown):
         \begin{enumerate}[(i)]
-            \item \emph{P} $\land$ $\neg$\emph{P}
+            \item \emph{P} $\land$ $\neg$\emph{P}.
+            \item \emph{P} $\lor$ True.
+            \item \emph{P} $\land$ False.
         \end{enumerate}
+    \item Short-circuit evaluation as described above allows for a significant speedup and is the
+        design utilized in common programming languages today.
 \end{enumerate}
+\textbf{7.4}
 
 \end{document}
 

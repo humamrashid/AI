@@ -70,7 +70,7 @@ end
         $\mathcal{NP}$-Complete, respectively.
     \item A modified \verb|PL-TRUE?| algorithm which can determine truth values of some partial
         models can be the the same as the above given \verb|PL-TRUE?| with the additional feature of
-        short-circuit evalutation for its \verb|and| and \verb|or| keyword operators similar to what
+        short-circuit evaluation for its \verb|and| and \verb|or| keyword operators similar to what
         is found in the Python programming language (or equivalently \verb|&&| and \verb:||: in
         C or Java). Some examples of partial models where this would \emph{not} work include (assume
         that the truth value of $P$ is unknown):
@@ -84,18 +84,22 @@ end
 \end{enumerate}
 \textbf{7.4}
 \begin{enumerate}[(a)]
-    \item $False \models True$: True.
-    \item $True \models False$: False.
-    \item $(A \land B) \models (A \Leftrightarrow B)$: True.
-    \item $(A \Leftrightarrow B) \models (A \lor B)$: False.
-    \item $(A \Leftrightarrow B) \models (\neg A \lor B)$: True.
-    \item
-    \item
-    \item
-    \item
-    \item
-    \item
-    \item
+    \item $False \models True$ is \emph{correct}.
+    \item $True \models False$ is \emph{incorrect}.
+    \item $(A \land B) \models (A \Leftrightarrow B)$ is \emph{correct}.
+    \item $(A \Leftrightarrow B) \models (A \lor B)$ is \emph{incorrect}.
+    \item $(A \Leftrightarrow B) \models (\neg A \lor B)$ is \emph{correct}.
+    \item $(A \lor B) \land (\neg C \lor \neg D \lor E) \models (A \lor B \lor C) \land (B \land C
+        \land D \Rightarrow E)$ is \emph{correct}.
+    \item $(A \lor B) \land (\neg C \lor \neg D \lor E) \models (A \lor B) \land (\neg D \lor E)$ is
+        \emph{correct}.
+    \item $(A \lor B) \land \neg(A \Rightarrow B)$ is satisfiable is \emph{correct}.
+    \item $(A \land B) \Rightarrow C \models (A \Rightarrow C) \lor (B \Rightarrow C)$ is
+        \emph{incorrect}.
+    \item $(C \lor (\neg A \land \neg B)) \equiv ((A \Rightarrow C) \land (B \Rightarrow C))$.
+    \item $(A \Leftrightarrow B) \land (\neg A \lor B)$ is satisfiable.
+    \item $(A \Leftrightarrow B) \Leftrightarrow C$ has the same number of models as $(A
+        \Leftrightarrow B)$ for any fixed set of proposition symbols that includes $A, B, C$.
 \end{enumerate}
 \textbf{7.5}\\
 \textbf{7.6}\\

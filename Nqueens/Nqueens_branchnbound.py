@@ -20,6 +20,10 @@ major_diag_matrix = np.empty((N, N))
 # Matrix for keeping track of minor diagonal (/) in main board.
 minor_diag_matrix = np.empty((N, N))
 
-print(board_matrix)
+def place_queens(board):
+    return board_matrix
+
+print(f"Original board:\n\n{board_matrix}\n")
+print(f"Board after placing {N} queens:\n\n{place_queens(board_matrix)}")
 
 # EOF.

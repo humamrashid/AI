@@ -9,6 +9,7 @@ import numpy as np
 print("Enter N for NxN board: ", end="")
 N = int(input())
 
+# Main board matrix for placing N
 board_matrix = np.zeros((N, N))
 right_diag_matrix = np.empty((N, N))
 left_diag_matrix = np.empty((N, N))

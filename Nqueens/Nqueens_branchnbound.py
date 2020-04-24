@@ -27,20 +27,19 @@ for i in range(0, N):
     for j in range(0, N):
         minor_diag_matrix[i][j] = i + j
 
-# Print the board as a simple grid.
+# Print the given board as a simple grid.
 def print_board(board):
     for i in range(0, N):
         for j in range(0, N):
             print(f"{board[i][j]}", end=" ")
         print()
-    print()
 
 def place_queens(board):
     return board_matrix
 
 print("Original board:\n")
 print_board(board_matrix)
-print(f"Board after placing {N} queens:\n")
+print(f"\nBoard after placing {N} queens:\n")
 print_board(place_queens(board_matrix))
 
 # EOF.

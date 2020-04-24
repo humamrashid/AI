@@ -3,11 +3,14 @@
 
 # Solution for N-queens problem using branch and bound method.
 
+import sys
 import numpy as np
 
-# Ask user for board size.
-print("Enter N for NxN board: ", end="")
-N = int(input())
+# Get board size.
+if len(sys.argv) != 2:
+    print(f"Usage: {sys.argv[0]} <N>")
+    exit(1)
+N = int(sys.argv[1])
 
 # Main board matrix for placing N queens.
 board_matrix = np.zeros((N, N))

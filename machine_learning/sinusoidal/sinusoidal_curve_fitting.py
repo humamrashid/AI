@@ -7,18 +7,19 @@ import numpy as np
 from numpy.polynomial import polynomial as pnl
 import matplotlib.pyplot as plt
 
-if len(sys.argv) != 4:
-    print(f"Usage: <data_n> <pln_deg> <orig_n>")
+if len(sys.argv) != 5:
+    print(f"Usage: <data_n> <pln_deg> <orig_n> <std_dev>")
     exit(1)
 
 data_n = int(sys.argv[1])
 pln_deg = int(sys.argv[2])
 orig_n = int(sys.argv[3])
+std_dev = float(sys.argv[4])
 if data_n <= 0 or orig_n <= 0:
     print("Number of data points must be > 0")
     exit(1)
-if pln_deg < 0:
-    print("Polynomial degree must be >= 0")
+if pln_deg < 0 or std_dev < 0:
+    print("Polynomial degree and standard deviation must be >= 0")
     exit(1)
 
 # Original sinusodial curve sine(2*pi*x) of orig_n values from [0, 1].
@@ -28,7 +29,7 @@ original = np.linspace(0, 1, orig_n)
 x = np.linspace(0, 1, data_n)
 
 # Training data with small amount of Gaussian white noise.
-t_data = np.random.normal(loc=np.sin(2 * np.pi * x), scale=0.2, size=data_n)
+t_data = np.random.normal(loc=np.sin(2 * np.pi * x), scale=std_dev, size=data_n)
 
 # Least squares fitting.
 coeff = pnl.polyfit(x, t_data, pln_deg)

@@ -161,7 +161,7 @@ def breadth_first():
        actions = action_set(node.state)
        for act in actions.items():
            child = child_node(node, act)
-           if not in_explored(child.state) and not in_frontier(child.state):
+           if not in_explored(child.state) and not in_frontier(child):
                if goal_test(child.state):
                    return solution(child)
                frontier.append(child)

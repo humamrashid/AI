@@ -29,15 +29,17 @@ explored = set()
 
 # Search tree node structure.
 class Node:
-    def __init__(self, state, parent, action, cost):
+    def __init__(self, state, parent, cost):
         self.state = state
         self.parent = parent
-        self.action = action
         self.path_cost = cost
 
-# Child node is based on the parent and action taken.
 def child_node(parent, act):
-    return Node(act[1], parent, act[0], parent.path_cost + 1)
+    state = np.zeros((8, 8), dtype=np.int8)
+    transpose = state.T
+    for i in range(8):
+        transpose[i][random.choice([0, 1, 2, 3, 4, 5, 6, 7])] = 1
+    return Node(state, parent, parent.path_cost + 1)
 
 # Print a tile pattern from given 'state'.
 def print_board(state):
@@ -45,14 +47,6 @@ def print_board(state):
         for j in range(8):
             print(state[i][j], end="  ")
         print()
-
-def action_set(state):
-    choices = []
-    for i in range(8):
-        choices.append(i)
-    for i in range(8):
-        state[i][random.choice[choices]] = 1
-    return actions
 
 # Add something to the explored set.
 def add_explored(state):
@@ -101,14 +95,12 @@ def uniform_cost():
        if goal_test(node.state):
            return solution(node)
        add_explored(node.state)
-       actions = action_set(node.state)
-       for act in actions.items():
-           child = child_node(node, act)
-           if not in_explored(child.state) and not in_frontier(child.state):
-               heappush(frontier, (child.path_cost, child))
-           else if in_frontier(child.state) and child.path_cost > node.path_cost:
-               # replace that frontier node with child
-               node = child
+       child = child_node(node)
+       if not in_explored(child.state) and not in_frontier(child):
+           heappush(frontier, (child.path_cost, child))
+       else if in_frontier(child.state) and child.path_cost > node.path_cost:
+           # replace that frontier node with child
+           node = child
 
 print('Initial state:\n')
 print_board(init_state)
@@ -119,9 +111,6 @@ if solution == None:
 #else:
     #while len(solution) != 0:
         #n = solution.pop()
-        #if n.action != None:
-            #print(f"\n{n.action}:\n")
-            #print_board(n.state)
     #print(f"\n*** Solved ***\nPath Cost: {n.path_cost}")
 
 # EOF.

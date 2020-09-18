@@ -47,6 +47,7 @@ plt.axis('tight')
 plt.xlim(0, 1)
 plt.ylim(-1, 1)
 plt.legend()
+
 plt.show()
 
 # EOF.
